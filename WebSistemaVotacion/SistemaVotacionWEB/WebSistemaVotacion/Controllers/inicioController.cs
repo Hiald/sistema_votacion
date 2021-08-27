@@ -14,6 +14,16 @@ namespace WebSistemaVotacion.Controllers
             return View();
         }
 
+        public ActionResult inicio()
+        {
+            return View();
+        }
+
+        public ActionResult registro()
+        {
+            return View();
+        }
+
         public ActionResult error()
         {
             return View();

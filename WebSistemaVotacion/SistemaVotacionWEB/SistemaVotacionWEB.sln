@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1525
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSistemaVotacion", "WebSistemaVotacion\WebSistemaVotacion.csproj", "{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaVotacionAD", "SistemaVotacionAD\SistemaVotacionAD.csproj", "{727FC8D1-8ECB-490E-8635-6D03683811C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaVotacionED", "SistemaVotacionED\SistemaVotacionED.csproj", "{2C526F43-A9C9-4288-B859-739B411B6675}"
@@ -13,16 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaVotacionTD", "Sistem
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrontendUtil", "FrontendUtil\FrontendUtil.csproj", "{C1E381A8-E18B-41F7-B53E-F03F60CB60F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSistemaVotacion", "WebSistemaVotacion\WebSistemaVotacion.csproj", "{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}.Release|Any CPU.Build.0 = Release|Any CPU
 		{727FC8D1-8ECB-490E-8635-6D03683811C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{727FC8D1-8ECB-490E-8635-6D03683811C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{727FC8D1-8ECB-490E-8635-6D03683811C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{C1E381A8-E18B-41F7-B53E-F03F60CB60F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1E381A8-E18B-41F7-B53E-F03F60CB60F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1E381A8-E18B-41F7-B53E-F03F60CB60F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A29DF29-3D8C-43C4-BA89-770D6AD3F520}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
