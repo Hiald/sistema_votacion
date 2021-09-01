@@ -16,7 +16,6 @@ namespace SistemaVotacionAD
             cnMysql = cn;
         }
 
-
         public edUsuario adObtenerUsuario(string adcorreo, string adclave)
         {
             try
@@ -45,6 +44,8 @@ namespace SistemaVotacionAD
                             int pos_vubigeo = mdrd.GetOrdinal("v_ubigeo");
                             int pos_vcorreo = mdrd.GetOrdinal("v_correo");
                             int pos_itipousuario = mdrd.GetOrdinal("i_tipo_usuario");
+                            int pos_itipo_documento = mdrd.GetOrdinal("i_tipo_documento");
+                            int pos_vdocumento = mdrd.GetOrdinal("v_documento");
                             int pos_resultado = mdrd.GetOrdinal("_resultado");
 
                             while (mdrd.Read())
@@ -63,6 +64,8 @@ namespace SistemaVotacionAD
                                 senUsuario.subigeo = (mdrd.IsDBNull(pos_vubigeo) ? "-" : mdrd.GetString(pos_vubigeo));
                                 senUsuario.scorreo = (mdrd.IsDBNull(pos_vcorreo) ? "-" : mdrd.GetString(pos_vcorreo));
                                 senUsuario.itipousuario = (mdrd.IsDBNull(pos_itipousuario) ? 0 : mdrd.GetInt32(pos_itipousuario));
+                                senUsuario.itipodoc = (mdrd.IsDBNull(pos_itipo_documento) ? 0 : mdrd.GetInt32(pos_itipo_documento));
+                                senUsuario.snumdoc = (mdrd.IsDBNull(pos_vdocumento) ? "-" : mdrd.GetString(pos_vdocumento));
                                 senUsuario._resultado = (mdrd.IsDBNull(pos_resultado) ? 0 : mdrd.GetInt32(pos_resultado));
                             }
                         }
@@ -79,7 +82,7 @@ namespace SistemaVotacionAD
 
         public int adInsertarUsuario(string adnombres, string adapellidos, int igenero, int adidregion,int adidprovincia,
             int adidciudad, int adiddistrito, string adubigeo, string simagenperfil, string simagenportada, string adfechanacimiento,
-            int adbestado, string adfecharegistro, string adhoraregistro, int adtipousuario, string adcorreo, 
+            int adbestado, string adfecharegistro, string adhoraregistro, int adtipousuario, string adcorreo, int aditipodoc, string adnumdoc,
             string adclave, string adtoken)
         {
             try
@@ -106,6 +109,8 @@ namespace SistemaVotacionAD
                 cmd.Parameters.Add("_v_correo", MySqlDbType.VarChar, 100).Value = adcorreo;
                 cmd.Parameters.Add("_v_clave", MySqlDbType.VarChar, 500).Value = adclave;
                 cmd.Parameters.Add("_v_token", MySqlDbType.VarChar, 500).Value = adtoken;
+                cmd.Parameters.Add("_i_tipo_documento", MySqlDbType.Int32).Value = aditipodoc;
+                cmd.Parameters.Add("_v_documento", MySqlDbType.VarChar, 25).Value = adnumdoc;
 
                 result = Convert.ToInt32(cmd.ExecuteScalar());
                 return result;
@@ -163,7 +168,7 @@ namespace SistemaVotacionAD
             string adsubigeo,string adnombres, string adapellidos, string adsnombreusuario, string adsdireccion,
             string addireccion2, int adigenero, string adscorreo2, string adfacebook, string adinstagram, string adtwitter,
             string adimagenperfil, string adimagenportada, string adcelular1, string adfechanacimiento, string adfechamodificacion,
-            string adhoramodificacion, int adbestado)
+            string adhoramodificacion, int adbestado, int aditipodoc, string adnumdoc)
         {
             try
             {
@@ -193,6 +198,8 @@ namespace SistemaVotacionAD
                 cmd.Parameters.Add("_v_fechamodificacion", MySqlDbType.VarChar, 25).Value = adfechamodificacion;
                 cmd.Parameters.Add("_v_horamodificacion", MySqlDbType.VarChar, 25).Value = adhoramodificacion;
                 cmd.Parameters.Add("_b_estado", MySqlDbType.Bit).Value = adbestado;
+                cmd.Parameters.Add("_i_tipo_documento", MySqlDbType.Int32).Value = aditipodoc;
+                cmd.Parameters.Add("_v_documento", MySqlDbType.VarChar, 25).Value = adnumdoc;
                 result = Convert.ToInt32(cmd.ExecuteScalar());
                 return result;
             }

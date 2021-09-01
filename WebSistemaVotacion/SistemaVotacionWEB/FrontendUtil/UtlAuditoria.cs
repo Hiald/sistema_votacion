@@ -11,15 +11,17 @@ namespace FrontendUtil
     {
         private const string SESSION_IDUSUARIO = "SESSION_IDUSUARIO";
         private const string SESSION_SNOMBRE = "SESSION_SNOMBRE";
-        private const string SESSION_APELLIDO = "SESSION_SAPELLIDO";
+        private const string SESSION_SAPELLIDO = "SESSION_SAPELLIDO";
         private const string SESSION_SEMAIL = "SESSION_SEMAIL";
+        private const string SESSION_IPAIS = "SESSION_IPAIS";
+        private const string SESSION_IREGION = "SESSION_IREGION";
+        private const string SESSION_IPROVINCIA = "SESSION_IPROVINCIA";
+        private const string SESSION_ICIUDAD = "SESSION_ICIUDAD";
+        private const string SESSION_IDISTRITO = "SESSION_IDISTRITO";
+        private const string SESSION_SUBIGEO = "SESSION_SUBIGEO";
+        private const string SESSION_ITIPOUSUARIO = "SESSION_ITIPOUSUARIO";
         private const string SESSION_ITIPODOC = "SESSION_ITIPODOC";
-        private const string SESSION_SDOCUMENTO = "SESSION_SDOCUMENTO";
-        private const string SESSION_TIPOUSUARIO = "SESSION_TIPOUSUARIO";
-        private const string SESSION_CELULAR = "SESSION_CELULAR";
-        private const string SESSION_IMAGENUSUARIO = "SESSION_IMAGENUSUARIO";
-        private const string SESSION_SRUC = "SESSION_SRUC";
-        private const string SESSION_SRAZONSOCIAL = "SESSION_SRAZONSOCIAL";
+        private const string SESSION_SNUMDOC = "SESSION_SNUMDOC";
 
         #region "Obtiene Datos del Usuario"
 
@@ -33,40 +35,49 @@ namespace FrontendUtil
         }
         public static string ObtenerApellido()
         {
-            return ((HttpContext.Current.Session[SESSION_APELLIDO] == null) ? "-" : HttpContext.Current.Session[SESSION_APELLIDO].ToString());
+            return ((HttpContext.Current.Session[SESSION_SAPELLIDO] == null) ? "-" : HttpContext.Current.Session[SESSION_SAPELLIDO].ToString());
         }
         public static string ObtenerEmail()
         {
             return ((HttpContext.Current.Session[SESSION_SEMAIL] == null) ? "" : HttpContext.Current.Session[SESSION_SEMAIL].ToString());
         }
-        public static int ObtenerTipoDocumento()
+        public static int ObtenerIpais()
+        {
+            return ((HttpContext.Current.Session[SESSION_IPAIS] == null) ? -1 : int.Parse(HttpContext.Current.Session[SESSION_IPAIS].ToString()));
+        }
+        public static int ObtenerIregion()
+        {
+            return ((HttpContext.Current.Session[SESSION_IREGION] == null) ? -1 : int.Parse(HttpContext.Current.Session[SESSION_IREGION].ToString()));
+        }
+        public static int ObtenerIprovincia()
+        {
+            return ((HttpContext.Current.Session[SESSION_IPROVINCIA] == null) ? -1 : int.Parse(HttpContext.Current.Session[SESSION_IPROVINCIA].ToString()));
+        }
+        public static int ObtenerIciudad()
+        {
+            return ((HttpContext.Current.Session[SESSION_ICIUDAD] == null) ? -1 : int.Parse(HttpContext.Current.Session[SESSION_ICIUDAD].ToString()));
+        }
+        public static int ObtenerIdistrito()
+        {
+            return ((HttpContext.Current.Session[SESSION_IDISTRITO] == null) ? -1 : int.Parse(HttpContext.Current.Session[SESSION_IDISTRITO].ToString()));
+        }
+        public static string ObtenerUbigeo()
+        {
+            return ((HttpContext.Current.Session[SESSION_SUBIGEO] == null) ? "" : HttpContext.Current.Session[SESSION_SUBIGEO].ToString());
+        }
+        public static int ObtenerTipoUsuario()
+        {
+            return ((HttpContext.Current.Session[SESSION_ITIPOUSUARIO] == null) ? -1 : int.Parse(HttpContext.Current.Session[SESSION_ITIPOUSUARIO].ToString()));
+        }
+        public static int ObtenerItipodoc()
         {
             return ((HttpContext.Current.Session[SESSION_ITIPODOC] == null) ? -1 : int.Parse(HttpContext.Current.Session[SESSION_ITIPODOC].ToString()));
         }
         public static string ObtenerDocumento()
         {
-            return ((HttpContext.Current.Session[SESSION_SDOCUMENTO] == null) ? "" : HttpContext.Current.Session[SESSION_SDOCUMENTO].ToString());
+            return ((HttpContext.Current.Session[SESSION_SNUMDOC] == null) ? "" : HttpContext.Current.Session[SESSION_SNUMDOC].ToString());
         }
-        public static int ObtenerTipoUsuario()
-        {
-            return ((HttpContext.Current.Session[SESSION_TIPOUSUARIO] == null) ? -1 : int.Parse(HttpContext.Current.Session[SESSION_TIPOUSUARIO].ToString()));
-        }
-        public static string ObtenerCelular()
-        {
-            return ((HttpContext.Current.Session[SESSION_CELULAR] == null) ? "" : HttpContext.Current.Session[SESSION_CELULAR].ToString());
-        }
-        public static string ObtenerImagenUsuario()
-        {
-            return ((HttpContext.Current.Session[SESSION_IMAGENUSUARIO] == null) ? "/imagenalumno/vacio.png" : HttpContext.Current.Session[SESSION_IMAGENUSUARIO].ToString());
-        }
-        public static string ObtenerRUC()
-        {
-            return ((HttpContext.Current.Session[SESSION_SRUC] == null) ? "-" : HttpContext.Current.Session[SESSION_SRUC].ToString());
-        }
-        public static string ObtenerRazonSocial()
-        {
-            return ((HttpContext.Current.Session[SESSION_SRAZONSOCIAL] == null) ? "-" : HttpContext.Current.Session[SESSION_SRAZONSOCIAL].ToString());
-        }
+
         public static string ObtenerFechaSistema()
         {
             return DateTime.Now.ToShortDateString();
@@ -78,15 +89,17 @@ namespace FrontendUtil
             {
                 HttpContext.Current.Session[SESSION_IDUSUARIO] = DVariables["IDUSUARIO"];
                 HttpContext.Current.Session[SESSION_SNOMBRE] = DVariables["SNOMBRE"];
-                HttpContext.Current.Session[SESSION_APELLIDO] = DVariables["APELLIDO"];
+                HttpContext.Current.Session[SESSION_SAPELLIDO] = DVariables["SAPELLIDO"];
                 HttpContext.Current.Session[SESSION_SEMAIL] = DVariables["SEMAIL"];
+                HttpContext.Current.Session[SESSION_IPAIS] = DVariables["IPAIS"];
+                HttpContext.Current.Session[SESSION_IREGION] = DVariables["IREGION"];
+                HttpContext.Current.Session[SESSION_IPROVINCIA] = DVariables["IPROVINCIA"];
+                HttpContext.Current.Session[SESSION_ICIUDAD] = DVariables["ICIUDAD"];
+                HttpContext.Current.Session[SESSION_IDISTRITO] = DVariables["IDISTRITO"];
+                HttpContext.Current.Session[SESSION_SUBIGEO] = DVariables["SUBIGEO"];
+                HttpContext.Current.Session[SESSION_ITIPOUSUARIO] = DVariables["ITIPOUSUARIO"];
                 HttpContext.Current.Session[SESSION_ITIPODOC] = DVariables["ITIPODOC"];
-                HttpContext.Current.Session[SESSION_SDOCUMENTO] = DVariables["SDOCUMENTO"];
-                HttpContext.Current.Session[SESSION_TIPOUSUARIO] = DVariables["TIPOUSUARIO"];
-                HttpContext.Current.Session[SESSION_CELULAR] = DVariables["CELULAR"];
-                //HttpContext.Current.Session[SESSION_IMAGENUSUARIO] = DVariables["IMAGENUSUARIO"];
-                HttpContext.Current.Session[SESSION_SRUC] = DVariables["SRUC"];
-                HttpContext.Current.Session[SESSION_SRAZONSOCIAL] = DVariables["SRAZONSOCIAL"];
+                HttpContext.Current.Session[SESSION_SNUMDOC] = DVariables["SNUMDOC"];
                 HttpContext.Current.Session.Timeout = 24 * 60;
             }
             catch (ArgumentOutOfRangeException kfe)
@@ -194,16 +207,17 @@ namespace FrontendUtil
             {
                 if (HttpContext.Current.Session[SESSION_IDUSUARIO] == null ||
                 HttpContext.Current.Session[SESSION_SNOMBRE] == null ||
-                HttpContext.Current.Session[SESSION_APELLIDO] == null ||
+                HttpContext.Current.Session[SESSION_SAPELLIDO] == null ||
                 HttpContext.Current.Session[SESSION_SEMAIL] == null ||
+                HttpContext.Current.Session[SESSION_IPAIS] == null ||
+                HttpContext.Current.Session[SESSION_IREGION] == null ||
+                HttpContext.Current.Session[SESSION_IPROVINCIA] == null ||
+                HttpContext.Current.Session[SESSION_ICIUDAD] == null ||
+                HttpContext.Current.Session[SESSION_IDISTRITO] == null ||
+                HttpContext.Current.Session[SESSION_SUBIGEO] == null ||
+                HttpContext.Current.Session[SESSION_ITIPOUSUARIO] == null ||
                 HttpContext.Current.Session[SESSION_ITIPODOC] == null ||
-                HttpContext.Current.Session[SESSION_SDOCUMENTO] == null ||
-                HttpContext.Current.Session[SESSION_TIPOUSUARIO] == null ||
-                HttpContext.Current.Session[SESSION_CELULAR] == null ||
-                HttpContext.Current.Session[SESSION_SRUC] == null ||
-                HttpContext.Current.Session[SESSION_SRAZONSOCIAL] == null
-                //|| HttpContext.Current.Session[SESSION_IMAGENUSUARIO] == null
-                )
+                HttpContext.Current.Session[SESSION_SNUMDOC] == null)
                 {
                     return true;
                 }
@@ -233,15 +247,17 @@ namespace FrontendUtil
             {
                 HttpContext.Current.Session[SESSION_IDUSUARIO] = null;
                 HttpContext.Current.Session[SESSION_SNOMBRE] = null;
-                HttpContext.Current.Session[SESSION_APELLIDO] = null;
+                HttpContext.Current.Session[SESSION_SAPELLIDO] = null;
                 HttpContext.Current.Session[SESSION_SEMAIL] = null;
+                HttpContext.Current.Session[SESSION_IPAIS] = null;
+                HttpContext.Current.Session[SESSION_IREGION] = null;
+                HttpContext.Current.Session[SESSION_IPROVINCIA] = null;
+                HttpContext.Current.Session[SESSION_ICIUDAD] = null;
+                HttpContext.Current.Session[SESSION_IDISTRITO] = null;
+                HttpContext.Current.Session[SESSION_SUBIGEO] = null;
+                HttpContext.Current.Session[SESSION_ITIPOUSUARIO] = null;
                 HttpContext.Current.Session[SESSION_ITIPODOC] = null;
-                HttpContext.Current.Session[SESSION_SDOCUMENTO] = null;
-                HttpContext.Current.Session[SESSION_TIPOUSUARIO] = null;
-                HttpContext.Current.Session[SESSION_CELULAR] = null;
-                HttpContext.Current.Session[SESSION_SRUC] = null;
-                HttpContext.Current.Session[SESSION_SRAZONSOCIAL] = null;
-                HttpContext.Current.Session[SESSION_IMAGENUSUARIO] = null;
+                HttpContext.Current.Session[SESSION_SNUMDOC] = null;
                 return true;
             }
             catch (Exception ex)

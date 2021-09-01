@@ -10,11 +10,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regístrate</title>
     <link href="~/Assets/Lib/bootstrap5/bootstrap.css" rel="stylesheet" />
-
+    <style>
+    </style>
 </head>
 <body>
 
-
+    <div class="d-lg-flex half">
+        <div class="bg order-1 order-md-2 bgimagen"></div>
+        <div class="contents order-2 order-md-1 mt-3">
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-md-7">
+                        <div>
+                            <h5>
+                                <svg width="30" height="30" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="4.24261" y="24.2428" width="28" height="4" rx="2" transform="rotate(-45 4.24261 24.2428)" fill="#660087" />
+                                    <rect x="12.7279" y="32.7281" width="28" height="4" rx="2" transform="rotate(-45 12.7279 32.7281)" fill="#660087" />
+                                    <rect x="15.5364" y="21.3946" width="16" height="4" rx="2" transform="rotate(45 15.5364 21.3946)" fill="#660087" />
+                                    <rect x="15.5563" y="4.44382" width="28" height="4" rx="2" transform="rotate(45 15.5563 4.44382)" fill="#660087" />
+                                </svg>
+                                Partido Morado
+                            </h5>
+                        </div>
+                        <div class="text-center mt-4">
+                            <h3 class="titulo">Crear cuenta</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="txnombres" class="form-label font-15">Nombres</label>
+                                    <input type="text" class="form-control formulario-inicio" id="txnombres">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="txapellidos" class="form-label font-15">Apellidos</label>
+                                    <input type="text" class="form-control formulario-inicio" id="txapellidos">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="slcdoc" class="form-label font-15">Documento de identidad</label>
+                                    <select class="form-select form-select-sm formulario-inicio" id="slcdoc">
+                                        <option selected>Seleccione</option>
+                                        <option value="1">DNI</option>
+                                        <option value="2">Carnet de extranjería</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" style="margin-top: 7px;">
+                                    <label class="font-15" for="txnumerodoc">&nbsp;</label>
+                                    <input type="text" class="form-control formulario-inicio" id="txnumerodoc">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label for="txcorreo" class="font-15">Correo electrónico</label>
+                                    <input type="email" class="form-control formulario-inicio" id="txcorreo">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="txclave" class="font-15">Contraseña</label>
+                                    <input type="password" class="form-control formulario-inicio" id="txclave">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="txconfirmarclave" class="font-15">Confirmar contraseña</label>
+                                    <input type="password" class="form-control formulario-inicio" id="txconfirmarclave">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="slcdepartamento" class="font-15">Departamento</label>
+                                    <select class="form-select form-select-sm formulario-inicio" id="slcdepartamento">
+                                        <option selected>Seleccione</option>
+                                        <option value="1">DNI</option>
+                                        <option value="2">Carnet de extranjería</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="slcprovincia" class="font-15">Provincia</label>
+                                    <select class="form-select form-select-sm formulario-inicio" id="slcprovincia">
+                                        <option selected>Seleccione</option>
+                                        <option value="1">DNI</option>
+                                        <option value="2">Carnet de extranjería</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="slcdistrito" class="font-15">Distrito</label>
+                                    <select class="form-select form-select-sm formulario-inicio" id="slcdistrito">
+                                        <option selected>Seleccione</option>
+                                        <option value="1">DNI</option>
+                                        <option value="2">Carnet de extranjería</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row align-items-start justify-content-start mt-1">
+                    <div class="col-md-11 text-center" style="margin-left: 8px;">
+                        <input type="checkbox" value="" />&nbsp;Estoy de acuerdo con los términos de uso
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-center mt-1">
+                    <div class="col-md-5 text-center">
+                        <input value="Confirmar datos" class="btn btn-inicio">
+                    </div>
+                </div>
+                <div class="row align-items-center justify-content-center mt-3">
+                    <div class="col-md-7 text-center">
+                        <p class="enlace">¿Tienes una cuenta? <a href="@Url.Action("inicio","inicio")" class="enlace-2">&nbsp;Iniciar sesión</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="~/Assets/Lib/bootstrap5/bootstrap.bundle.js"></script>
 </body>

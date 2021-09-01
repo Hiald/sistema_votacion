@@ -157,6 +157,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Fuentes\HelveticaNeueLTStdMd.otf" />
+    <Content Include="Assets\Fuentes\HelveticaNeueLTStdBd.otf" />
+    <Content Include="Assets\Fuentes\HelveticaNeueLTStdRoman.otf" />
+    <Content Include="Assets\Fuentes\HelveticaNeueLTStdTh.otf" />
     <None Include="packages.config" />
     <Content Include="Views\inicio\error.cshtml" />
     <Content Include="Views\inicio\Index.cshtml" />

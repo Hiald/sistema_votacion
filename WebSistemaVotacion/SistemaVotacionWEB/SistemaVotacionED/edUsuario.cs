@@ -23,6 +23,8 @@ namespace SistemaVotacionED
         public int itipousuario { get; set; }
         public int _resultado { get; set; }
         public string sfechanacimiento { get; set; }
+        public int itipodoc { get; set; }
+        public string snumdoc { get; set; }
         //
         public string sdireccion { get; set; }
         public string sdireccion2 { get; set; }

@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS t_usuario(
   `v_direccion` VARCHAR(150) DEFAULT NULL,
   `v_direccion2` VARCHAR(150) DEFAULT NULL,
   `i_genero` INT DEFAULT NULL,
+  `i_tipo_documento` INT DEFAULT NULL,
+  `v_documento` VARCHAR(25) DEFAULT NULL,
   `v_correo2` VARCHAR(150) DEFAULT NULL,
   `v_facebook` VARCHAR(250) DEFAULT NULL,
   `v_instagram` VARCHAR(250) DEFAULT NULL,
@@ -194,6 +196,8 @@ BEGIN
         ,u.v_ubigeo,
         ,a.v_correo
         ,a.i_tipo_usuario
+        ,u.i_tipo_documento
+        ,u.v_documento
         ,1 as '_resultado'
   FROM t_usuario u
     LEFT JOIN t_acceso a ON a.idusuario = u.idusuario
@@ -218,6 +222,8 @@ BEGIN
         ,'' as 'v_ubigeo'
         ,'' as 'v_correo'
         ,0 as 'i_tipo_usuario'
+        ,'' as 'i_tipo_documento'
+        ,'' as 'v_documento'
         ,0 as '_resultado'
     END;
     END IF;
@@ -252,7 +258,8 @@ CREATE PROCEDURE `sp_insertar_usuario`
   ,IN _v_correo VARCHAR(100)
   ,IN _v_clave VARCHAR(500)
   ,IN _v_token VARCHAR(500)
-  )
+  ,IN _i_tipo_documento INT
+  ,IN _v_documento VARCHAR(25))
 BEGIN
 
 IF EXISTS(SELECT idusuario FROM t_acceso WHERE v_correo = _v_correo) THEN
@@ -274,6 +281,8 @@ BEGIN
       ,v_imagenperfil
       ,v_imagenportada
       ,v_fechanacimiento
+      ,i_tipo_documento
+      ,v_documento
       ,b_estado
       ,dt_fecharegistro
       ,v_horaregistro)
@@ -290,6 +299,8 @@ BEGIN
       ,_v_imagenperfil
       ,_v_imagenportada
       ,STR_TO_DATE(_v_fechanacimiento, '%Y-%m-%d')
+      ,_i_tipo_documento
+      ,_v_documento
       ,1
       ,STR_TO_DATE(_dt_fecharegistro, '%Y-%m-%d')
       ,_v_horaregistro);
@@ -404,7 +415,9 @@ CREATE PROCEDURE `sp_actualizar_usuario`(
   ,IN _v_fechamodificacion VARCHAR(25)
   ,IN _v_horamodificacion VARCHAR(25)
   ,IN _idusuario_mod INT,
-  ,IN _b_estado BIT)
+  ,IN _b_estado BIT
+  ,IN _i_tipo_documento INT
+  ,IN _v_documento VARCHAR(25))
 BEGIN
     UPDATE t_usuario
     SET
@@ -430,7 +443,9 @@ BEGIN
       v_fechamodificacion = STR_TO_DATE(_v_fechamodificacion, '%Y-%m-%d'),
       v_horamodificacion = _v_horamodificacion,
       i_usuario_mod = _idusuario_mod,
-      b_estado = _b_estado 
+      b_estado = _b_estado,
+      i_tipo_documento = _i_tipo_documento,
+      v_documento = _v_documento
     WHERE idusuario = _idusuario;   
     SELECT _idusuario as '_resultado';      
 
