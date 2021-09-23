@@ -14,10 +14,10 @@ namespace SistemaVotacionED
         public int idvotacion { get; set; }
         public int idusuario { get; set; }
         public int idpais { get; set; }
-        public int idregion { get; set; }
-        public int idprovincia { get; set; }
-        public int idciudad { get; set; }
-        public int iddistrito { get; set; }
+        public string idregion { get; set; }
+        public string idprovincia { get; set; }
+        public string idciudad { get; set; }
+        public string iddistrito { get; set; }
         public string subigeo { get; set; }
         public string snombre { get; set; }
         public string sdescripcion { get; set; }
@@ -56,5 +56,9 @@ namespace SistemaVotacionED
         public int iestado { get; set; }
         public string sfecharegistro { get; set; }
         public string shoraregistro { get; set; }
+        public string sfechaini { get; set; }
+        public string shoraini { get; set; }
+        public string sfechafin { get; set; }
+        public string shorafin { get; set; }
     }
 }

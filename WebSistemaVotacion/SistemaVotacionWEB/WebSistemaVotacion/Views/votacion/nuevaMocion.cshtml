@@ -1,0 +1,724 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .form-labelv1 {
+        vertical-align: -webkit-baseline-middle;
+    }
+
+    #barraLateral {
+        height: 165vh;
+    }
+</style>
+
+<div class="row mt-3 mb-5">
+    <div class="h3">
+        Mociones > Crear una moción
+    </div>
+</div>
+
+<div class="mt-4 mb-3">
+    <div class="row">
+        <div class="col-3">
+            <label class="form-labelv1">Título</label>
+        </div>
+        <div class="col-6">
+            <input type="text" class="form-control formulario-inicio" maxlength="150" placeholder="Mi moción" id="txtitulo">
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">Descripción (opcional)</label>
+        </div>
+        <div class="col-6">
+            <textarea id="txdescripcion" rows="5" class="form-control formulario-inicio" maxlength="250" placeholder="Ingrese la descripción de su moción"></textarea>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">Inicio</label>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="col-4">
+                    <input type="date" class="form-control formulario-inicio" maxlength="10" placeholder="Mi moción" id="txfechaini">
+                </div>
+                <div class="col-3">
+                    <select class="form-select form-select-sm formulario-inicio" id="slchora1">
+                        <option value="1:00">1:00</option>
+                        <option value="2:00">2:00</option>
+                        <option value="3:00">3:00</option>
+                        <option value="4:00">4:00</option>
+                        <option value="5:00">5:00</option>
+                        <option value="6:00">6:00</option>
+                        <option value="7:00">7:00</option>
+                        <option value="8:00">8:00</option>
+                        <option value="9:00">9:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <select class="form-select form-select-sm formulario-inicio" id="slctipohora1">
+                        <option value="PM">PM</option>
+                        <option value="AM">AM</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">Término</label>
+        </div>
+        <div class="col-9">
+            <div class="row">
+                <div class="col-4">
+                    <input type="date" class="form-control formulario-inicio" maxlength="10" placeholder="Mi moción" id="txfechafin">
+                </div>
+                <div class="col-3">
+                    <select class="form-select form-select-sm formulario-inicio" id="slchora2">
+                        <option value="1:00">1:00</option>
+                        <option value="2:00">2:00</option>
+                        <option value="3:00">3:00</option>
+                        <option value="4:00">4:00</option>
+                        <option value="5:00">5:00</option>
+                        <option value="6:00">6:00</option>
+                        <option value="7:00">7:00</option>
+                        <option value="8:00">8:00</option>
+                        <option value="9:00">9:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                    </select>
+                </div>
+                <div class="col-3">
+                    <select class="form-select form-select-sm formulario-inicio" id="slctipohora2">
+                        <option value="PM">PM</option>
+                        <option value="AM">AM</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">¿En dónde se mostrará la votación?</label>
+        </div>
+        <div class="col-6 d-inline">
+            <div class="col-md-6 d-inline">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" checked name="chkpermiso" type="radio" id="chksi" value="1">
+                    <label class="form-check-label" for="chksi">Todos los asignados</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="chkpermiso" type="radio" id="chkno" value="2">
+                    <label class="form-check-label" for="chkno">Específicos</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4" id="divDepartamento">
+        <div class="col-3">
+            <label class="form-labelv1">Departamento</label>
+        </div>
+        <div class="col-7">
+            <div class="col-md-12 d-inline" id="divResDepartamento"></div>
+        </div>
+    </div>
+    <div class="row mt-4" id="divProvincia">
+        <div class="col-3">
+            <label class="form-labelv1">Provincia</label>
+        </div>
+        <div class="col-7">
+            <div class="col-md-12 d-inline" id="divResProvincia"></div>
+        </div>
+    </div>
+    <div class="row mt-4" id="divDistrito">
+        <div class="col-3">
+            <label class="form-labelv1">Distrito</label>
+        </div>
+        <div class="col-7">
+            <div class="col-md-12 d-inline" id="divResDistrito"></div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">Límite de tiempo</label>
+        </div>
+        <div class="col-2 d-inline">
+            <div class="col-md-6 d-inline">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="chklimitetiempo" type="radio" id="chksi" value="1">
+                    <label class="form-check-label" for="chksi">Sí</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" checked name="chklimitetiempo" type="radio" id="chkno" value="2">
+                    <label class="form-check-label" for="chkno">No</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="d-inline">
+                <select class="form-select form-select-sm formulario-inicio" id="slcTiempo">
+                    <option value="1">5</option>
+                    <option value="2">10</option>
+                    <option value="3">30</option>
+                    <option value="4">60</option>
+                    <option value="5">Indefinido</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-1 p-0 mt-1">
+            Min.
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">Respuestas</label>
+        </div>
+        <div class="col-4" id="divOpciones">
+            <div class="row mb-2">
+                <div class="col-1 mt-1">
+                    1.
+                </div>
+                <div class="col-10">
+                    <input autocomplete="off" value="A favor" type="text" class="form-control formulario-inicio" maxlength="10" placeholder="Opción 1" id="txpreg1">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-1 mt-1">
+                    2.
+                </div>
+                <div class="col-10">
+                    <input autocomplete="off" value="En contra" type="text" class="form-control formulario-inicio" maxlength="10" placeholder="Opción 2" id="txpreg2">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-1 mt-1">
+                    3.
+                </div>
+                <div class="col-10">
+                    <input autocomplete="off" value="Abstención" type="text" class="form-control formulario-inicio" maxlength="10" placeholder="Opción 2" id="txpreg3">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-4">
+            <div class="row mb-2">
+                <div class="col-1 mt-1">
+                    <p id="p-cantidad">4.</p>
+                </div>
+                <div class="col-10" style="cursor:pointer;">
+                    <input type="text" class="form-control formulario-inicio" maxlength="0" placeholder="Añadir Opción" id="txagregarOpcion">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row mt-5">
+        <div class="col-3">
+
+        </div>
+        <div class="col-3 mb-5">
+            <button class="btn btn-inicio" onclick="fnRegistrarMocion();">Guardar</button>
+        </div>
+        <div class="col-4 mb-5">
+            <button class="btn btn-iniciov3" id="btnRegresar">Volver a inicio</button>
+        </div>
+    </div>
+
+</div>
+
+@if (ViewBag.VBTipoUsuario == 3)
+{
+    <input type="hidden" value="0" id="hddDepartamentos" />
+    <input type="hidden" value="0" id="hddProvincias" />
+    <input type="hidden" value="0" id="hddDistritos" />
+}
+else
+{
+    <input type="hidden" value="@ViewBag.VBDepartamentos" id="hddDepartamentos" />
+    <input type="hidden" value="@ViewBag.VBProvincias" id="hddProvincias" />
+    <input type="hidden" value="@ViewBag.VBDistritos" id="hddDistritos" />
+}
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #4F1B7F;">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        <img class="imgcheck" src="~/Assets/img/icono_check.svg" />
+                    </h5>
+                </div>
+                <div class="modal-body text-center justify-content-center">
+                    <h3>¡Registro exitoso!</h3>
+                    <h5>La votación ha sido creada</h5>
+                </div>
+                <div class="modal-footer text-center justify-content-center">
+                    <button type="button" class="btn btn-inicio" onclick="fnRegresar('inicio/principal');">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section scripts{
+    <script src="~/Assets/js/Departamentos.js"></script>
+    <script>
+        $(document).ready(function () {
+            fnOcultarLoader();
+            //fn_CargarDepartamento();
+        });
+        $('#txfechaini').val(moment().format("YYYY-MM-DD"));
+        $('#txfechafin').val(moment().add(15, "days").format("YYYY-MM-DD"));
+
+        $('#divDepartamento').hide();
+        $('#divProvincia').hide();
+        $('#divDistrito').hide();
+        var VGUbicacionPermiso = 0;
+        $('input[name="chkpermiso"]').change(function () {
+            if (this.value == '2') {
+                VGUbicacionPermiso = 1;
+                $('#divDepartamento').show();
+                $('#divProvincia').hide();
+                $('#divDistrito').hide();
+                fn_CargarDepartamento();
+            }
+            else {
+                VGUbicacionPermiso = 0;
+                $('#divDepartamento').hide();
+                $('#divProvincia').hide();
+                $('#divDistrito').hide();
+            }
+        });
+
+        function fn_CargarDepartamento() {
+            $('#divResDepartamento').html();
+            var VGDepartamentos = $('#hddDepartamentos').val();
+            //$('#divResDepartamento').append('<div class="form-check form-check-inline">' +
+            //    '<input class="form-check-input" name="chkTodosDepartamentos" type="checkbox" id="chktodosDep">' +
+            //    '<label class="form-check-label" for="chktodosDep">Todos</label>' +
+            //    '</div>');
+            if (VGDepartamentos != '0') {
+                var ArrVGDepartamentos = VGDepartamentos.split(",");
+                ArrVGDepartamentos.filter(function (datDep) {
+                    lstDatos.departamentos.filter(function (el) {
+                        if (datDep == el.contador_departamento) {
+                            $('#divResDepartamento').append('<div class="form-check form-check-inline">' +
+                                '<input class="form-check-input" name="chkDepartamentos" type="checkbox" id="chkdep' + el.contador_departamento + '" value="' + el.contador_departamento + '">' +
+                                '<label class="form-check-label" for="chkdep' + el.contador_departamento + '">' + el.nombre + '</label>' +
+                                '</div>');
+                        }
+                    });
+                });
+            } else {
+                lstDatos.departamentos.filter(function (el) {
+                    $('#divResDepartamento').append('<div class="form-check form-check-inline">' +
+                        '<input class="form-check-input" name="chkDepartamentos" type="checkbox" id="chkdep' + el.contador_departamento + '" value="' + el.contador_departamento + '">' +
+                        '<label class="form-check-label" for="chkdep' + el.contador_departamento + '">' + el.nombre + '</label>' +
+                        '</div>');
+                });
+            }
+            fn_ActivarProvincias();
+            //fn_TodosDepartamentos();
+        }
+
+        $('#txfechaini').change(function () {
+            $('#txfechaini').attr("min", $(this).val());
+        });
+
+        function fn_TodosDepartamentos() {
+            $("input:checkbox[name='chkTodosDepartamentos']").unbind().change(function () {
+                if (this.checked) {
+                    $('input[name="chkDepartamentos"]').prop('checked', true);
+                    //fn_ActivarProvinciasAuto();
+                } else {
+                    $('input[name="chkDepartamentos"]').prop('checked', false);
+                    //fn_ActivarProvinciasAuto();
+                }
+            });
+        }
+
+        function fn_ActivarProvinciasAuto() {
+            $('#divProvincia').show();
+            $('#divResProvincia').html("");
+            $('#divResDistrito').html("");
+
+            var VGProvincias = $('#hddProvincias').val();
+            //$('#divResProvincia').append('<div class="form-check form-check-inline">' +
+            //    '<input class="form-check-input" name="chkTodosProvincia" type="checkbox" id="chktodosProv">' +
+            //    '<label class="form-check-label" for="chktodosProv">Todos</label>' +
+            //    '</div>');
+            var ArrVGProvincias = VGProvincias.split(",");
+            if (VGProvincias != "0") {
+
+                $("input:checkbox[name='chkDepartamentos']:checked").each(function () {
+                    var idDepartamentoAct = $(this).val();
+                    ArrVGProvincias.filter(function (resProv) {
+                        lstDatos.provincia.filter(function (ele) {
+                            if (resProv == ele.contador_provincia && idDepartamentoAct == ele.contador_departamento) {
+                                $('#divResProvincia').append('<div class="form-check form-check-inline">' +
+                                    '<input class="form-check-input" name="chkProvincia" type="checkbox" id="chkprov' + ele.contador_provincia + '" value="' + ele.contador_provincia + '">' +
+                                    '<label class="form-check-label" for="chkprov' + ele.contador_provincia + '">' + ele.nombre + '</label>' +
+                                    '</div>');
+                            }
+                        });
+
+                    });
+
+                });
+
+            } else {
+                $("input:checkbox[name='chkDepartamentos']:checked").each(function () {
+                    var iddepartamento = $(this).val();
+                    lstDatos.provincia.filter(function (el) {
+                        if (iddepartamento == el.contador_departamento) {
+                            $('#divResProvincia').append('<div class="form-check form-check-inline">' +
+                                '<input class="form-check-input" name="chkProvincia" type="checkbox" id="chkprov' + el.contador_provincia + '" value="' + el.contador_provincia + '">' +
+                                '<label class="form-check-label" for="chkprov' + el.contador_provincia + '">' + el.nombre + '</label>' +
+                                '</div>');
+                        }
+                    });
+                });
+            }
+            fn_ActivarDistritos();
+            fn_TodosProvincia();
+        }
+
+        function fn_ActivarProvincias() {
+            $('input[name="chkDepartamentos"]').unbind().change(function () {
+                $('#divProvincia').show();
+                $('#divResProvincia').html("");
+                $('#divResDistrito').html("");
+
+                var VGProvincias = $('#hddProvincias').val();
+                //$('#divResProvincia').append('<div class="form-check form-check-inline">' +
+                //    '<input class="form-check-input" name="chkTodosProvincia" type="checkbox" id="chktodosProv">' +
+                //    '<label class="form-check-label" for="chktodosProv">Todos</label>' +
+                //    '</div>');
+                var ArrVGProvincias = VGProvincias.split(",");
+                if (VGProvincias != "0") {
+                    $("input:checkbox[name='chkDepartamentos']:checked").each(function () {
+                        var idDepartamentoAct = $(this).val();
+                        ArrVGProvincias.filter(function (resProv) {
+                            lstDatos.provincia.filter(function (ele) {
+                                if (resProv == ele.contador_provincia && idDepartamentoAct == ele.contador_departamento) {
+                                    $('#divResProvincia').append('<div class="form-check form-check-inline">' +
+                                        '<input class="form-check-input" name="chkProvincia" type="checkbox" id="chkprov' + ele.contador_provincia + '" value="' + ele.contador_provincia + '">' +
+                                        '<label class="form-check-label" for="chkprov' + ele.contador_provincia + '">' + ele.nombre + '</label>' +
+                                        '</div>');
+                                }
+                            });
+
+                        });
+
+                    });
+
+                } else {
+                    $("input:checkbox[name='chkDepartamentos']:checked").each(function () {
+                        var iddepartamento = $(this).val();
+                        lstDatos.provincia.filter(function (el) {
+                            if (iddepartamento == el.contador_departamento) {
+                                $('#divResProvincia').append('<div class="form-check form-check-inline">' +
+                                    '<input class="form-check-input" name="chkProvincia" type="checkbox" id="chkprov' + el.contador_provincia + '" value="' + el.contador_provincia + '">' +
+                                    '<label class="form-check-label" for="chkprov' + el.contador_provincia + '">' + el.nombre + '</label>' +
+                                    '</div>');
+                            }
+                        });
+                    });
+                }
+                fn_ActivarDistritos();
+            });
+
+            //fn_TodosProvincia();
+        }
+
+        function fn_TodosProvincia() {
+            $("input:checkbox[name='chkTodosProvincia']").unbind().change(function () {
+                if (this.checked) {
+                    $('input[name="chkProvincia"]').prop('checked', true);
+                    //fn_ActivarDistritosAuto();
+                } else {
+                    $('input[name="chkProvincia"]').prop('checked', false);
+                    //fn_ActivarDistritosAuto();
+                }
+            });
+        }
+
+        function fn_ActivarDistritos() {
+            $('input[name="chkProvincia"]').unbind().change(function () {
+                $('#divDistrito').show();
+                $('#divResDistrito').html("");
+
+                var VGDistritos = $('#hddDistritos').val();
+                var ArrVGDistritos = VGDistritos.split(",");
+                if (ArrVGDistritos != "0") {
+
+                    $("input:checkbox[name='chkProvincia']:checked").each(function () {
+                        var idprovinciaAct = $(this).val();
+                        ArrVGDistritos.filter(function (resDist) {
+                            lstDatos.distrito.filter(function (ele) {
+                                if (resDist == ele.contador_distrito && idprovinciaAct == ele.contador_provincia) {
+                                    $('#divResDistrito').append('<div class="form-check form-check-inline">' +
+                                        '<input class="form-check-input" name="chkDistrito" type="checkbox" id="chkdist' + ele.contador_distrito + '" value="' + ele.contador_distrito + '">' +
+                                        '<label class="form-check-label" for="chkdist' + ele.contador_distrito + '">' + ele.nombre + '</label>' +
+                                        '</div>');
+                                }
+                            });
+                        });
+
+                    });
+
+                } else {
+                    $("input:checkbox[name='chkProvincia']:checked").each(function () {
+                        var idprovincia = $(this).val();
+                        lstDatos.distrito.filter(function (ele) {
+                            if (idprovincia == ele.contador_provincia) {
+                                $('#divResDistrito').append('<div class="form-check form-check-inline">' +
+                                    '<input class="form-check-input" name="chkDistrito" type="checkbox" id="chkdist' + ele.contador_distrito + '" value="' + ele.contador_distrito + '">' +
+                                    '<label class="form-check-label" for="chkdist' + ele.contador_distrito + '">' + ele.nombre + '</label>' +
+                                    '</div>');
+                            }
+                        });
+                    });
+                }
+
+            });
+        }
+
+        var VGcantidad_opciones = 3;
+        function fnAgregarOpciones() {
+            if (VGcantidad_opciones <= 10) {
+                VGcantidad_opciones++;
+                $('#divOpciones').append('<div class="row mb-2" id="divOpcion' + VGcantidad_opciones + '">' +
+                    '<div class="col-1 mt-1">' + VGcantidad_opciones + '.</div>' +
+                    '<div class="col-10">' +
+                    '<input autocomplete="off" type="text" class="form-control formulario-inicio" maxlength="10" placeholder="Opción ' + VGcantidad_opciones + '" id="txpreg' + VGcantidad_opciones + '">' +
+                    '</div>' +
+                    '<div style="cursor:pointer;" class="col-1 p-0 mt-1 clsborrar" data-icantidad="' + VGcantidad_opciones + '">X</div>' +
+                    '</div>');
+                var VLcantidad_opciones_total = VGcantidad_opciones + 1;
+                $('#p-cantidad').text(VLcantidad_opciones_total + ".");
+                fn_activarBorrar();
+            }
+        }
+
+        $('#txagregarOpcion').click(function () {
+            fnAgregarOpciones();
+        });
+
+        function fn_activarBorrar() {
+            $('.clsborrar').unbind().click(function () {
+                var icantidad = $(this).attr("data-icantidad");
+                fnRemoverOpciones(icantidad);
+                VGcantidad_opciones--;
+                $('#p-cantidad').text((VGcantidad_opciones + 1) + ".");
+
+            });
+        }
+
+        function fnRemoverOpciones(parIcantidad) {
+            $('#divOpcion' + parIcantidad).remove();
+        }
+
+        $('#btnRegresar').click(function () {
+            window.location.href = RutaPrincipal + "inicio/principal";
+        });
+
+        function fnRegistrarMocion() {
+            fnMostrarLoader();
+            var sListaDepartamentos = [];
+            var sListaProvincias = [];
+            var sListaCiudad = [];
+            var snombre = $('#txtitulo').val();
+            var txdescripcion = $('#txdescripcion').val();
+
+            if (snombre == "" || txdescripcion == "") {
+                fnOcultarLoader();
+                alert("Completar Campos");
+                return;
+            }
+
+            var ivalorAsignacion = $('input[name="chkpermiso"]:checked').val();
+            if (ivalorAsignacion == "1") {
+                if ($('#hddDepartamentos').val() == "0") {
+                    sListaDepartamentos = "0";
+                } else {
+                    sListaDepartamentos = $('#hddDepartamentos').val();
+                }
+                if ($('#hddProvincias').val() == "0") {
+                    sListaProvincias = "0";
+                } else {
+                    sListaProvincias = $('#hddDepartamentos').val();
+                }
+                if ($('#hddDistritos').val() == "0") {
+                    sListaCiudad = "0";
+                } else {
+                    sListaCiudad = $('#hddDepartamentos').val();
+                }
+            } else {
+                $("input:checkbox[name='chkDepartamentos']:checked").each(function () {
+                    sListaDepartamentos.push($(this).val());
+                });
+                $("input:checkbox[name='chkProvincia']:checked").each(function () {
+                    sListaProvincias.push($(this).val());
+                });
+                $("input:checkbox[name='chkDistrito']:checked").each(function () {
+                    sListaCiudad.push($(this).val());
+                });
+
+            }
+            var icontador4 = 0;
+            var icontador5 = 0;
+            var icontador6 = 0;
+            var icontador7 = 0;
+            var icontador8 = 0;
+            var icontador9 = 0;
+            var icontador10 = 0;
+            if (VGcantidad_opciones == 4) {
+                icontador4 = 1;
+                icontador5 = 0;
+                icontador6 = 0;
+                icontador7 = 0;
+                icontador8 = 0;
+                icontador9 = 0;
+                icontador10 = 0;
+            } else if (VGcantidad_opciones == 5) {
+
+                icontador4 = 1;
+                icontador5 = 1;
+                icontador6 = 0;
+                icontador7 = 0;
+                icontador8 = 0;
+                icontador9 = 0;
+                icontador10 = 0;
+            } else if (VGcantidad_opciones == 6) {
+                icontador4 = 1;
+                icontador5 = 1;
+                icontador6 = 1;
+                icontador7 = 0;
+                icontador8 = 0;
+                icontador9 = 0;
+                icontador10 = 0;
+            } else if (VGcantidad_opciones == 7) {
+                icontador4 = 1;
+                icontador5 = 1;
+                icontador6 = 1;
+                icontador7 = 1;
+                icontador8 = 0;
+                icontador9 = 0;
+                icontador10 = 0;
+            } else if (VGcantidad_opciones == 8) {
+                icontador4 = 1;
+                icontador5 = 1;
+                icontador6 = 1;
+                icontador7 = 1;
+                icontador8 = 1;
+                icontador9 = 0;
+                icontador10 = 0;
+            } else if (VGcantidad_opciones == 9) {
+                icontador4 = 1;
+                icontador5 = 1;
+                icontador6 = 1;
+                icontador7 = 1;
+                icontador8 = 1;
+                icontador9 = 1;
+                icontador10 = 0;
+            } else if (VGcantidad_opciones == 10) {
+                icontador4 = 1;
+                icontador5 = 1;
+                icontador6 = 1;
+                icontador7 = 1;
+                icontador8 = 1;
+                icontador9 = 1;
+                icontador10 = 1;
+            }
+
+            var sfecharegistro = moment().format("YYYY-MM-DD");
+            var shora = moment().format("hh:mm:ss");
+
+            var sfechaini = $('#txfechaini').val();
+            var shoraini = $('#slchora1 option:selected').val() + ' ' + $('#slctipohora1 option:selected').val();
+            var sfechafin = $('#txfechafin').val();
+            var shorafin = $('#slchora2 option:selected').val() + ' ' + $('#slctipohora2 option:selected').val();
+
+            $.ajax({
+                type: "POST",
+                url: RutaPrincipal + 'votacion/wInsertarVotacion',
+                data: {
+                    "witipoact": 2,
+                    "widvotacion": 0,
+                    "widpais": 1,
+                    "widregion": 1,
+                    "widprovincia": sListaDepartamentos.toString(),
+                    "widciudad": sListaProvincias.toString(),
+                    "widdistrito": sListaCiudad.toString(),
+                    "wubigeo": "000000",
+                    "wsnombre": snombre,
+                    "wdesc": txdescripcion,
+                    "witipovot": 1,
+                    "witipotiempo": 1,
+                    "witiempo": 0,
+                    "wbtiempofechora": 0,
+                    "wtiempofec": "",
+                    "wtiempohora": "",
+                    "wirespuesta": 0,
+                    "wsrespuesta": "",
+                    "wivariasopc": 2,
+                    "wicantidadopc": VGcantidad_opciones,
+                    "wivotcant": VGcantidad_opciones,
+                    "wipreg1": 1,
+                    "wspreg1": $('#txpreg1').val(),
+                    "wipreg2": 1,
+                    "wspreg2": $('#txpreg2').val(),
+                    "wipreg3": 1,
+                    "wspreg3": $('#txpreg3').val(),
+                    "wipreg4": icontador4,
+                    "wspreg4": $('#txpreg4').val(),
+                    "wipreg5": icontador5,
+                    "wspreg5": $('#txpreg5').val(),
+                    "wipreg6": icontador6,
+                    "wspreg6": $('#txpreg6').val(),
+                    "wipreg7": icontador7,
+                    "wspreg7": $('#txpreg7').val(),
+                    "wipreg8": icontador8,
+                    "wspreg8": $('#txpreg8').val(),
+                    "wipreg9": icontador9,
+                    "wspreg9": $('#txpreg9').val(),
+                    "wipreg10": icontador10,
+                    "wspreg10": $('#txpreg10').val(),
+                    "wobs": "",
+                    "wiestado": 1,
+                    "wsfechareg": sfecharegistro,
+                    "wshorareg": shora,
+                    "wsfechamod": "",
+                    "wshoramod": "",
+                    "fechaini": sfechaini,
+                    "horaini": shoraini,
+                    "horafin": shorafin,
+                    "fechafin": sfechafin
+                },
+                async: true,
+                success: function (msg) {
+                    var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'), { backdrop: 'static' })
+                    modal.show();
+                },
+                error: function (msg) {
+                    fnOcultarLoader();
+                },
+                complete: function (data) {
+                    // si acabo de completar
+                }
+            });
+        }
+
+    </script>
+}

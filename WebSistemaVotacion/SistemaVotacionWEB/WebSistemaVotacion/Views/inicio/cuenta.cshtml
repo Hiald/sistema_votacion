@@ -1,0 +1,158 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-3 mb-5">
+    <div class="h2">
+        Cuenta
+    </div>
+</div>
+
+<div class="row mt-5 text-right justify-content-end">
+    <div class="col-3">
+        <button class="btn btn-iniciov2" id="btnNuevaCuenta">Crear una cuenta</button>
+    </div>
+</div>
+
+<div class="row mt-3 justify-content-center text-center">
+    <div class="col-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Cuenta</th>
+                    <th scope="col">Departamento(s)</th>
+                    <th scope="col">Provincia(s)</th>
+                    <th scope="col">Distrito(s)</th>
+                </tr>
+            </thead>
+            <tbody id="bodyCuenta"></tbody>
+        </table>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Assets/js/Departamentos.js"></script>
+    <script>
+        $(document).ready(function () {
+            fnOcultarLoader();
+            fnListarAdmin();
+        });
+
+        $('#btnNuevaCuenta').click(function () {
+            window.location.href = RutaPrincipal + "inicio/nuevaCuenta";
+        });
+
+        function fnListarAdmin() {
+            fnMostrarLoader();
+
+            $('#bodyCuenta').html("");
+
+            $.ajax({
+                type: "POST",
+                url: RutaPrincipal + 'Inicio/wFiltrarUsuario',
+                data: {
+                    "wusuario": 0,
+                    "wbestado": 1,
+                    "wtipousuario": 2
+                },
+                async: true,
+                success: function (res) {
+                    fnOcultarLoader();
+                    console.log(res);
+
+                    if (!res.aaData == "") {
+                        $.each(res.aaData, function (index, value) {
+                            var sresdepartamento = value.sdepartamentos;
+                            var arrDepartamento = sresdepartamento.split(",");
+                            var sDepartamento = "";
+                            var icontadorDepartamento = 0;
+
+                            arrDepartamento.filter(function (dat) {
+                                icontadorDepartamento++;
+                                lstDatos.departamentos.filter(function (el) {
+                                    if (icontadorDepartamento == 1) {
+                                        if (el.contador_departamento == dat[0]) {
+                                            sDepartamento = el.nombre;
+                                        }
+                                    } else {
+                                        if (el.contador_departamento == dat) {
+                                            sDepartamento += ", " + el.nombre;
+                                        }
+                                    }
+
+                                });
+
+                            });
+
+                            var sresprovincia = value.sprovincias;
+                            var arrProvincia = sresprovincia.split(",");
+                            var sProvincia = "";
+                            var icontadorProvincia = 0;
+                            arrProvincia.filter(function (dat) {
+                                icontadorProvincia++;
+                                lstDatos.provincia.filter(function (el) {
+                                    if (icontadorProvincia == 1) {
+                                        if (el.contador_provincia == dat) {
+                                            sProvincia = el.nombre;
+                                        }
+                                    } else {
+                                        if (el.contador_provincia == dat) {
+                                            sProvincia += ", " + el.nombre;
+                                        }
+                                    }
+
+                                });
+
+                            });
+
+
+                            var sresdistrito = value.sdistritos;
+                            var arrDistrito = sresdistrito.split(",");
+                            var sDistrito = "";
+                            var icontadorDistrito = 0;
+                            arrDistrito.filter(function (dat) {
+                                icontadorDistrito++;
+                                lstDatos.distrito.filter(function (el) {
+                                    if (icontadorDistrito == 1) {
+                                        if (el.contador_distrito == dat) {
+                                            sDistrito = el.nombre;
+                                        }
+                                    } else {
+                                        if (el.contador_distrito == dat) {
+                                            sDistrito += ", " + el.nombre;
+                                        }
+                                    }
+
+                                });
+
+                            });
+
+                            $('#bodyCuenta').append('<tr>' +
+                                '<th scope="row">' + value.snombres + '</th>' +
+                                '<td>' + value.scorreo + '</td>' +
+                                '<td>' + sDepartamento + '</td>' +
+                                '<td>' + sProvincia + '</td>' +
+                                '<td>' + sDistrito + '</td>' +
+                                '</tr>');
+                        });
+                    }
+
+
+
+                },
+                error: function (msg) {
+                    fnOcultarLoader();
+                },
+                complete: function (data) {
+                    // si acabo de completar
+                }
+            });
+
+        }
+
+
+    </script>
+}
+

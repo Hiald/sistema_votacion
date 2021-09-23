@@ -41,6 +41,9 @@ namespace SistemaVotacionAD
                             int pos_idprovincia = mdrd.GetOrdinal("idprovincia");
                             int pos_idciudad = mdrd.GetOrdinal("idciudad");
                             int pos_iddistrito = mdrd.GetOrdinal("iddistrito");
+                            int pos_vdepartamentos = mdrd.GetOrdinal("v_departamentos");
+                            int pos_vprovincia = mdrd.GetOrdinal("v_provincia");
+                            int pos_vdistritos = mdrd.GetOrdinal("v_distritos");
                             int pos_vubigeo = mdrd.GetOrdinal("v_ubigeo");
                             int pos_vcorreo = mdrd.GetOrdinal("v_correo");
                             int pos_itipousuario = mdrd.GetOrdinal("i_tipo_usuario");
@@ -61,6 +64,9 @@ namespace SistemaVotacionAD
                                 senUsuario.idprovincia = (mdrd.IsDBNull(pos_idprovincia) ? 0 : mdrd.GetInt32(pos_idprovincia));
                                 senUsuario.idciudad = (mdrd.IsDBNull(pos_idciudad) ? 0 : mdrd.GetInt32(pos_idciudad));
                                 senUsuario.iddistrito = (mdrd.IsDBNull(pos_iddistrito) ? 0 : mdrd.GetInt32(pos_iddistrito));
+                                senUsuario.sdepartamentos = (mdrd.IsDBNull(pos_vdepartamentos) ? "" : mdrd.GetString(pos_vdepartamentos));
+                                senUsuario.sprovincias = (mdrd.IsDBNull(pos_vprovincia) ? "" : mdrd.GetString(pos_vprovincia));
+                                senUsuario.sdistritos = (mdrd.IsDBNull(pos_vdistritos) ? "" : mdrd.GetString(pos_vdistritos));
                                 senUsuario.subigeo = (mdrd.IsDBNull(pos_vubigeo) ? "-" : mdrd.GetString(pos_vubigeo));
                                 senUsuario.scorreo = (mdrd.IsDBNull(pos_vcorreo) ? "-" : mdrd.GetString(pos_vcorreo));
                                 senUsuario.itipousuario = (mdrd.IsDBNull(pos_itipousuario) ? 0 : mdrd.GetInt32(pos_itipousuario));
@@ -83,7 +89,7 @@ namespace SistemaVotacionAD
         public int adInsertarUsuario(string adnombres, string adapellidos, int igenero, int adidregion,int adidprovincia,
             int adidciudad, int adiddistrito, string adubigeo, string simagenperfil, string simagenportada, string adfechanacimiento,
             int adbestado, string adfecharegistro, string adhoraregistro, int adtipousuario, string adcorreo, int aditipodoc, string adnumdoc,
-            string adclave, string adtoken)
+            string adclave, string adtoken, string addepartamentos, string adprovincias, string addistritos)
         {
             try
             {
@@ -98,6 +104,9 @@ namespace SistemaVotacionAD
                 cmd.Parameters.Add("_idprovincia", MySqlDbType.Int32).Value = adidprovincia;
                 cmd.Parameters.Add("_idciudad", MySqlDbType.Int32).Value = adidciudad;
                 cmd.Parameters.Add("_iddistrito", MySqlDbType.Int32).Value = adiddistrito;
+                cmd.Parameters.Add("_v_departamentos", MySqlDbType.VarChar, 250).Value = addepartamentos;
+                cmd.Parameters.Add("_v_provincia", MySqlDbType.VarChar, 1000).Value = adprovincias;
+                cmd.Parameters.Add("_v_distritos", MySqlDbType.VarChar, 2500).Value = addistritos;
                 cmd.Parameters.Add("_v_ubigeo", MySqlDbType.VarChar, 10).Value = adubigeo;
                 cmd.Parameters.Add("_v_imagenperfil", MySqlDbType.VarChar, 250).Value = simagenperfil;
                 cmd.Parameters.Add("_v_imagenportada", MySqlDbType.VarChar, 250).Value = simagenportada;
@@ -168,7 +177,8 @@ namespace SistemaVotacionAD
             string adsubigeo,string adnombres, string adapellidos, string adsnombreusuario, string adsdireccion,
             string addireccion2, int adigenero, string adscorreo2, string adfacebook, string adinstagram, string adtwitter,
             string adimagenperfil, string adimagenportada, string adcelular1, string adfechanacimiento, string adfechamodificacion,
-            string adhoramodificacion, int adbestado, int aditipodoc, string adnumdoc)
+            string adhoramodificacion, int adbestado, int aditipodoc, string adnumdoc, string addepartamentos, string adprovincias,
+            string addistritos)
         {
             try
             {
@@ -180,6 +190,9 @@ namespace SistemaVotacionAD
                 cmd.Parameters.Add("_idprovincia", MySqlDbType.Int32).Value = adidprovincia;
                 cmd.Parameters.Add("_idciudad", MySqlDbType.Int32).Value = adidciudad;
                 cmd.Parameters.Add("_iddistrito", MySqlDbType.Int32).Value = adiddistrito;
+                cmd.Parameters.Add("_v_departamentos", MySqlDbType.VarChar, 250).Value = addepartamentos;
+                cmd.Parameters.Add("_v_provincia", MySqlDbType.VarChar, 1000).Value = adprovincias;
+                cmd.Parameters.Add("_v_distritos", MySqlDbType.VarChar, 2500).Value = addistritos;
                 cmd.Parameters.Add("_v_ubigeo", MySqlDbType.VarChar, 10).Value = adsubigeo;
                 cmd.Parameters.Add("_v_nombres", MySqlDbType.VarChar, 100).Value = adnombres;
                 cmd.Parameters.Add("_v_apellidos", MySqlDbType.VarChar, 100).Value = adapellidos;
@@ -210,25 +223,30 @@ namespace SistemaVotacionAD
             }
         }
 
-        public edUsuario adFiltrarUsuario(int adusuario, int adbestado)
+        public List<edUsuario> adFiltrarUsuario(int adusuario, int adbestado, int adtipousuario)
         {
             try
             {
-                edUsuario senUsuario = null;
+                List<edUsuario> lstusuario = new List<edUsuario>();
                 using (MySqlCommand cmd = new MySqlCommand("sp_filtrar_usuario", cnMysql))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add("_idusuario", MySqlDbType.Int32).Value = adusuario;
                     cmd.Parameters.Add("_bestado", MySqlDbType.Bit).Value = adbestado;
+                    cmd.Parameters.Add("_tipousuario", MySqlDbType.Int32).Value = adtipousuario;
                     using (MySqlDataReader mdrd = cmd.ExecuteReader())
                     {
                         if (mdrd != null)
                         {
+                            edUsuario senUsuario = null;
                             int pos_idusuario = mdrd.GetOrdinal("idusuario");
                             int pos_idpais = mdrd.GetOrdinal("idpais");
                             int pos_idprovincia = mdrd.GetOrdinal("idprovincia");
                             int pos_idciudad = mdrd.GetOrdinal("idciudad");
                             int pos_iddistrito = mdrd.GetOrdinal("iddistrito");
+                            int pos_vdepartamentos = mdrd.GetOrdinal("v_departamentos");
+                            int pos_vprovincia = mdrd.GetOrdinal("v_provincia");
+                            int pos_vdistritos = mdrd.GetOrdinal("v_distritos");
                             int pos_vubigeo = mdrd.GetOrdinal("v_ubigeo");
                             int pos_vnombres = mdrd.GetOrdinal("v_nombres");
                             int pos_vapellidos = mdrd.GetOrdinal("v_apellidos");
@@ -244,6 +262,7 @@ namespace SistemaVotacionAD
                             int pos_vimagenportada = mdrd.GetOrdinal("v_imagenportada");
                             int pos_vcelular1 = mdrd.GetOrdinal("v_celular1");
                             int pos_vfechanacimiento = mdrd.GetOrdinal("v_fechanacimiento");
+                            int pos_vcorreo = mdrd.GetOrdinal("v_correo");
 
                             while (mdrd.Read())
                             {
@@ -254,6 +273,9 @@ namespace SistemaVotacionAD
                                 senUsuario.idciudad = (mdrd.IsDBNull(pos_idciudad) ? 0 : mdrd.GetInt32(pos_idciudad));
                                 senUsuario.iddistrito = (mdrd.IsDBNull(pos_iddistrito) ? 0 : mdrd.GetInt32(pos_iddistrito));
                                 senUsuario.subigeo = (mdrd.IsDBNull(pos_vubigeo) ? "-" : mdrd.GetString(pos_vubigeo));
+                                senUsuario.sdepartamentos = (mdrd.IsDBNull(pos_vdepartamentos) ? "" : mdrd.GetString(pos_vdepartamentos));
+                                senUsuario.sprovincias = (mdrd.IsDBNull(pos_vprovincia) ? "" : mdrd.GetString(pos_vprovincia));
+                                senUsuario.sdistritos = (mdrd.IsDBNull(pos_vdistritos) ? "" : mdrd.GetString(pos_vdistritos));
                                 senUsuario.snombres = (mdrd.IsDBNull(pos_vnombres) ? "-" : mdrd.GetString(pos_vnombres));
                                 senUsuario.sapellidos = (mdrd.IsDBNull(pos_vapellidos) ? "-" : mdrd.GetString(pos_vapellidos));
                                 senUsuario.snombre_usuario = (mdrd.IsDBNull(pos_vnombreusuario) ? "-" : mdrd.GetString(pos_vnombreusuario));
@@ -268,10 +290,12 @@ namespace SistemaVotacionAD
                                 senUsuario.simagenportada = (mdrd.IsDBNull(pos_vimagenportada) ? "-" : mdrd.GetString(pos_vimagenportada));
                                 senUsuario.scelular1 = (mdrd.IsDBNull(pos_vcelular1) ? "-" : mdrd.GetString(pos_vcelular1));
                                 senUsuario.sfechanacimiento = (mdrd.IsDBNull(pos_vfechanacimiento) ? "-" : mdrd.GetString(pos_vfechanacimiento));
+                                senUsuario.scorreo = (mdrd.IsDBNull(pos_vcorreo) ? "-" : mdrd.GetString(pos_vcorreo));
+                                lstusuario.Add(senUsuario);
                             }
                         }
                     }
-                    return senUsuario;
+                    return lstusuario;
                 }
             }
             catch (Exception ex)

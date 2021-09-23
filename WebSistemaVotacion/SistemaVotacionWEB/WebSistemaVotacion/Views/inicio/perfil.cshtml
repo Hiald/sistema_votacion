@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "perfil";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-3 mb-5">
+    <div class="h2">
+        Mi perfil
+    </div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-2">
+        <img src="~/Assets/img/Avatar1.svg" width="100" height="100" class="rounded-circle">
+    </div>
+    <div class="col-md-1 mt-4 ml-3">
+        <h3>@ViewBag.VBNombres</h3>
+        <h3>@ViewBag.VBDni</h3>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="mt-2 alert alert-secondary" role="alert">
+            Cuenta
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <p>Correo electrónico para iniciar sesión</p>
+    </div>
+    <div class="col-md-4">
+        <p>@ViewBag.VBCorreo</p>
+    </div>
+    <div class="col-md-2">
+        <a href="#">Editar</a>
+    </div>
+
+    <div class="col-md-4">
+        <p>Contraseña para iniciar sesión</p>
+    </div>
+    <div class="col-md-4">
+        <p>*************</p>
+    </div>
+    <div class="col-md-2">
+        <a href="#">Editar</a>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            fnOcultarLoader();
+        });
+    </script>
+}

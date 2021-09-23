@@ -18,6 +18,10 @@ namespace SistemaVotacionED
         public int idprovincia { get; set; }
         public int idciudad { get; set; }
         public int iddistrito { get; set; }
+        public string sdepartamentos { get; set; }
+        public string sprovincias { get; set; }
+        public string sdistritos { get; set; }
+
         public string subigeo { get; set; }
         public string scorreo { get; set; }
         public int itipousuario { get; set; }

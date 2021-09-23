@@ -11455,16 +11455,16 @@ textarea.form-control-lg {
     background: #660087;
     color: #FFF;
     border: 1px solid #660087;
-    padding-left: 1px;
-    padding-right: 1px;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
     .btn-inicio:hover {
         background: #FFF;
         color: #660087;
         border: 1px solid #660087;
-        padding-left: 1px;
-        padding-right: 1px;
+        padding-left: 50px;
+        padding-right: 50px;
     }
 
 
@@ -11506,7 +11506,7 @@ textarea.form-control-lg {
 }
 
 .bgimagen {
-    background-image: url(https://preview.colorlib.com/theme/bootstrap/login-form-06/images/xbg_1.jpg.pagespeed.ic.nj5iPvtRed.webp);
+    background-image: url('../../img/xbg_1.jpg');
 }
 
 @media (max-width: 480px) {
@@ -11539,9 +11539,62 @@ textarea.form-control-lg {
 }
 
 .font-15 {
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .form-control {
     padding: 0.15rem 0.75rem;
+}
+
+.form-select:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #660087;
+    outline: 0;
+    box-shadow: 0 0 0 2px #66008770;
+}
+
+.font-16 {
+    font-size: 16px;
+}
+
+.btn-check:focus + .btn, .btn:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.1rem #6600871f;
+}
+
+
+.btn-iniciov2 {
+    background: #660087;
+    color: #FFF;
+    border: 1px solid #660087;
+}
+
+    .btn-iniciov2:hover {
+        background: #FFF;
+        color: #660087;
+        border: 1px solid #660087;
+    }
+
+.btn-iniciov3 {
+    background: #FFF;
+    color: #660087;
+    border: 1px solid #660087;
+}
+
+    .btn-iniciov3:hover {
+        background: #FFF;
+        color: #660087;
+        border: 1px solid #660087;
+    }
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: #fff;
+    background-color: #4F1B7F;
+}
+
+.alert-secondary {
+    color: #41464b;
+    background-color: #F2F2F7;
+    border-color: #F2F2F7;
 }

@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using SistemaVotacionAD;
 using SistemaVotacionED;
+using System.Collections.Generic;
 
 namespace SistemaVotacionTD
 {
@@ -36,7 +37,7 @@ namespace SistemaVotacionTD
         public int tdInsertarUsuario(string tdnombres, string tdapellidos, int tdigenero, int tdidregion, int tdidprovincia,
             int tdidciudad, int tdiddistrito, string tdubigeo, string tdsimagenperfil, string tdsimagenportada, string tdfecnac,
             int tdbestado, string tdfecharegistro, string tdhoraregistro, int tdtipousuario, string tdcorreo, int tditipodoc, string tdnumdoc,
-            string tdclave, string tdtoken)
+            string tdclave, string tdtoken, string addepartamentos, string adprovincias, string addistritos)
         {
             int iRespuesta = -1;
             try
@@ -49,7 +50,8 @@ namespace SistemaVotacionTD
                         iadUsuario = new adUsuario(con);
                         iRespuesta = iadUsuario.adInsertarUsuario(tdnombres, tdapellidos, tdigenero, tdidregion, tdidprovincia,
                                         tdidciudad, tdiddistrito, tdubigeo, tdsimagenperfil, tdsimagenportada, tdfecnac, tdbestado,
-                                        tdfecharegistro, tdhoraregistro, tdtipousuario, tdcorreo, tditipodoc, tdnumdoc, tdclave, tdtoken);
+                                        tdfecharegistro, tdhoraregistro, tdtipousuario, tdcorreo, tditipodoc, tdnumdoc, tdclave, tdtoken,
+                                        addepartamentos, adprovincias, addistritos);
                         scope.Commit();
                     }
                 }
@@ -117,7 +119,8 @@ namespace SistemaVotacionTD
             string tdsubigeo, string tdnombres, string tdapellidos, string tdsnombreusuario, string tdsdireccion,
             string tddireccion2, int tdigenero, string tdscorreo2, string tdfacebook, string tdinstagram, string tdtwitter,
             string tdimagenperfil, string tdimagenportada, string tdcelular1, string tdfechanacimiento, string tdfechamodificacion,
-            string tdhoramodificacion, int tdbestado, int aditipodoc, string adnumdoc)
+            string tdhoramodificacion, int tdbestado, int aditipodoc, string adnumdoc, string addepartamentos, string adprovincias,
+            string addistritos)
         {
             int iRespuesta = -1;
             try
@@ -131,7 +134,8 @@ namespace SistemaVotacionTD
                         iRespuesta = iadUsuario.adActualizarCuenta(tdidusuario, tdidpais, tdidprovincia, tdidciudad, tdiddistrito,
                                     tdsubigeo, tdnombres, tdapellidos, tdsnombreusuario, tdsdireccion, tddireccion2, tdigenero,
                                     tdscorreo2, tdfacebook, tdinstagram, tdtwitter, tdimagenperfil, tdimagenportada, tdcelular1,
-                                    tdfechanacimiento, tdfechamodificacion, tdhoramodificacion, tdbestado, aditipodoc, adnumdoc);
+                                    tdfechanacimiento, tdfechamodificacion, tdhoramodificacion, tdbestado, aditipodoc, adnumdoc,
+                                    addepartamentos, adprovincias, addistritos);
                         scope.Commit();
                     }
                 }
@@ -145,9 +149,9 @@ namespace SistemaVotacionTD
 
         }
 
-        public edUsuario tdFiltrarUsuario(int tdusuario, int tdbestado)
+        public List<edUsuario> tdFiltrarUsuario(int tdusuario, int tdbestado, int adtipousuario)
         {
-            edUsuario renUsuario = new edUsuario();
+            List<edUsuario> renUsuario = new List<edUsuario>();
             try
             {
                 using (MySqlConnection con = new MySqlConnection(mysqlConexion))
@@ -156,7 +160,7 @@ namespace SistemaVotacionTD
                     using (MySqlTransaction scope = con.BeginTransaction())
                     {
                         iadUsuario = new adUsuario(con);
-                        renUsuario = iadUsuario.adFiltrarUsuario(tdusuario, tdbestado);
+                        renUsuario = iadUsuario.adFiltrarUsuario(tdusuario, tdbestado, adtipousuario);
                         scope.Commit();
                     }
                 }

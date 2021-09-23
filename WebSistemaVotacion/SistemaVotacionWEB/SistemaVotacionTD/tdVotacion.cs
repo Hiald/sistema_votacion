@@ -13,14 +13,14 @@ namespace SistemaVotacionTD
     {
         adVotacion iadVotacion;
 
-        public int tdInsertarVotacion(int tditipoactualizar, int tdidvotacion, int tdidusuario, int tdidpais, int tdidregion,
-            int tdidprovincia, int tdidciudad, int tdiddistrito, string tdubigeo, string tdsnombre, string tddescripcion,
+        public int tdInsertarVotacion(int tditipoactualizar, int tdidvotacion, int tdidusuario, int tdidpais, string tdidregion,
+            string tdidprovincia, string tdidciudad, string tdiddistrito, string tdubigeo, string tdsnombre, string tddescripcion,
             int tditipovotacion, int tditipotiempo, int tditiempo, int tdbtiempofechahora, string tdtiempofecha, string tdtiempohora,
             int tdirespuesta, string tdsrespuesta, int tdivariasopc, int tdicantidadopc, int tdivotcant, int tdipreg1, string tdspreg1,
             int tdipreg2, string tdspreg2, int tdipreg3, string tdspreg3, int tdipreg4, string tdspreg4, int tdipreg5, string tdspreg5,
             int tdipreg6, string tdspreg6, int tdipreg7, string tdspreg7, int tdipreg8, string tdspreg8, int tdipreg9, string tdspreg9,
             int tdipreg10, string tdspreg10, string tdobs, int tdiestado, string tdsfechareg, string tdshorareg, string tdsfechamod,
-            string tdshoramod)
+            string tdshoramod, string adfechaini, string horaini, string horafin, string adfechafin)
         {
             int iRespuesta = -1;
             try
@@ -36,7 +36,8 @@ namespace SistemaVotacionTD
                                     tditipotiempo, tditiempo, tdbtiempofechahora, tdtiempofecha, tdtiempohora, tdirespuesta, tdsrespuesta,
                                     tdivariasopc, tdicantidadopc, tdivotcant, tdipreg1, tdspreg1, tdipreg2, tdspreg2, tdipreg3, tdspreg3,
                                     tdipreg4, tdspreg4, tdipreg5, tdspreg5, tdipreg6, tdspreg6, tdipreg7, tdspreg7, tdipreg8, tdspreg8,
-                                    tdipreg9, tdspreg9, tdipreg10, tdspreg10, tdobs, tdiestado, tdsfechareg, tdshorareg, tdsfechamod, tdshoramod);
+                                    tdipreg9, tdspreg9, tdipreg10, tdspreg10, tdobs, tdiestado, tdsfechareg, tdshorareg, tdsfechamod, tdshoramod,
+                                    adfechaini, horaini, horafin, adfechafin);
                         scope.Commit();
                     }
                 }
@@ -50,8 +51,9 @@ namespace SistemaVotacionTD
 
         }
 
-        public List<edVotacion> tdListarVotacion(int tdidusuario, int tdidvotacion, int tdidpais, int tdidregion, int tdidprovincia,
-                                                int tdidciudad, int tdiddistrito, string tdsubigeo)
+        public List<edVotacion> tdListarVotacion(int tdidusuario, int tdidvotacion, int tdidpais, string tdidregion, string tdidprovincia,
+                                                string tdidciudad, string tdiddistrito, string tdsubigeo, string adfechaini, 
+                                                string adfechafin ,int tdtipolistado)
         {
             List<edVotacion> renUsuario = new List<edVotacion>();
             try
@@ -63,7 +65,8 @@ namespace SistemaVotacionTD
                     {
                         iadVotacion = new adVotacion(con);
                         renUsuario = iadVotacion.adListarVotacion(tdidusuario, tdidvotacion, tdidpais, tdidregion, tdidprovincia,
-                                                                    tdidciudad, tdiddistrito, tdsubigeo);
+                                                                    tdidciudad, tdiddistrito, tdsubigeo, adfechaini, adfechafin,
+                                                                    tdtipolistado);
                         scope.Commit();
                     }
                 }
@@ -91,9 +94,9 @@ namespace SistemaVotacionTD
                     using (MySqlTransaction scope = con.BeginTransaction())
                     {
                         iadVotacion = new adVotacion(con);
-                        iRespuesta = iadVotacion.adInsertarVotacionUsuario(tditipoactualizar, tdidvotacionusuario, tdidvotacion, 
-                                                tdidusuario, tdsrepuesta, tdicantopc, tdipregunta1, tdipregunta2, tdipregunta3, 
-                                                tdipregunta4, tdipregunta5, tdipregunta6, tdipregunta7, tdipregunta8, tdipregunta9, 
+                        iRespuesta = iadVotacion.adInsertarVotacionUsuario(tditipoactualizar, tdidvotacionusuario, tdidvotacion,
+                                                tdidusuario, tdsrepuesta, tdicantopc, tdipregunta1, tdipregunta2, tdipregunta3,
+                                                tdipregunta4, tdipregunta5, tdipregunta6, tdipregunta7, tdipregunta8, tdipregunta9,
                                                 tdipregunta10, tdobservacion, tdiestado, tdsfechareg, tdshorareg, tdsfechamod, tdshoramod);
                         scope.Commit();
                     }

@@ -1,0 +1,384 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row mt-3 mb-3">
+    <div class="h2">
+        Mociones
+    </div>
+</div>
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <button class="nav-link active padding-tab navlink2" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Activas</button>
+        <button class="nav-link padding-tab navlink2" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Próximas</button>
+        <button class="nav-link padding-tab navlink2" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Finalizadas</button>
+    </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        @*<div class="mt-5 d-flex align-items-center justify-content-center">No hay mociones activas.</div>*@
+        @*<div class="mt-5 alert alert-secondary" role="alert">
+                Martes, 13 de septiembre
+            </div>*@
+
+        @if (ViewBag.VBTipoUsuario == 1)
+        {
+            <div id="divUsuario">
+                <div class="mt-5 align-items-center justify-content-center" id="bodyMociones">
+
+                </div>
+            </div>
+        }
+        else if (ViewBag.VBTipoUsuario == 2 || ViewBag.VBTipoUsuario == 3)
+        {
+            <div id="divAdmin">
+                <div class="row mt-5 text-right justify-content-end">
+                    <div class="col-3">
+                        <button class="btn btn-iniciov2" id="btnNuevamocion">Crear una moción</button>
+                    </div>
+                </div>
+                <div class="mt-5 align-items-center justify-content-center" id="bodyMociones">
+
+                </div>
+            </div>
+
+        }
+
+    </div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+        @if (ViewBag.VBTipoUsuario == 1)
+        {
+            <div id="divUsuario">
+                <div class="mt-5 align-items-center justify-content-center" id="bodyMocionesPróximas">
+
+                </div>
+            </div>
+        }
+        else if (ViewBag.VBTipoUsuario == 2 || ViewBag.VBTipoUsuario == 3)
+        {
+            <div id="divAdmin">
+                <div class="row mt-5 text-right justify-content-end">
+                    <div class="col-3">
+                        <button class="btn btn-iniciov2" id="btnNuevamocion">Crear una moción</button>
+                    </div>
+                </div>
+                <div class="mt-5 align-items-center justify-content-center" id="bodyMocionesPróximas">
+
+                </div>
+            </div>
+
+        }
+    </div>
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+        @if (ViewBag.VBTipoUsuario == 1)
+        {
+            <div id="divUsuario">
+                <div class="mt-5 align-items-center justify-content-center" id="bodyMocionesFinalizadas">
+
+                </div>
+            </div>
+        }
+        else if (ViewBag.VBTipoUsuario == 2 || ViewBag.VBTipoUsuario == 3)
+        {
+            <div id="divAdmin">
+                <div class="row mt-5 text-right justify-content-end">
+                    <div class="col-3">
+                        <button class="btn btn-iniciov2" id="btnNuevamocion">Crear una moción</button>
+                    </div>
+                </div>
+                <div class="mt-5 align-items-center justify-content-center" id="bodyMocionesFinalizadas">
+
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+@if (ViewBag.VBTipoUsuario == 3)
+{
+    <input type="hidden" value="0" id="hddDepartamentos" />
+    <input type="hidden" value="0" id="hddProvincias" />
+    <input type="hidden" value="0" id="hddDistritos" />
+}
+else
+{
+    <input type="hidden" value="@ViewBag.VBDepartamentos" id="hddDepartamentos" />
+    <input type="hidden" value="@ViewBag.VBProvincias" id="hddProvincias" />
+    <input type="hidden" value="@ViewBag.VBDistritos" id="hddDistritos" />
+}
+
+<input id="hddIdusuario" type="hidden" value="@ViewBag.VBIDusuario" />
+<input id="hddTipoUsuario" type="hidden" value="@ViewBag.VBTipoUsuario" />
+@section scripts{
+    <script>
+        $('#btnNuevamocion').click(function () {
+            window.location.href = RutaPrincipal + "votacion/nuevaMocion";
+        });
+
+        function fn_ListarMociones(tipoTab) {
+            fnMostrarLoader();
+            //tab activas: son las que empiezan desde TODO EL TIEMPO en el pasado hasta el dia de hoy)
+            //tab proximos: a partir de MAÑANA en adelante (hasta TODO EL TIEMPO en el futuro)
+            //tab finalizadas: son las que empiezan desde TODO EL TIEMPO en el pasado hasta el dia de AYER
+
+            var lstDepartamentos = $('#hddDepartamentos').val();
+            var lstProvincias = $('#hddProvincias').val();
+            var lstDistritos = $('#hddDistritos').val();
+
+            var fechaanterior, fechaactual, divMap, textoVacio, tipolistado;
+            fechaanterior = moment().format("YYYY-MM-DD");
+            fechaactual = moment().format("YYYY-MM-DD");
+            if (tipoTab == 1) {
+                divMap = "bodyMociones";
+                textoVacio = 'No hay mociones activas.';
+                tipolistado = 1;
+            } else if (tipoTab == 2) {
+                divMap = "bodyMocionesPróximas";
+                textoVacio = 'No tienes mociones próximas.';
+                tipolistado = 2;
+            } else if (tipoTab == 3) {
+                divMap = "bodyMocionesFinalizadas";
+                textoVacio = 'No tienes mociones finalizadas.';
+                tipolistado = 3;
+            }
+
+            var VLIDusuario = $('#hddIdusuario').val();
+            var VLTipoUsuario = $('#hddTipoUsuario').val();
+            if (VLTipoUsuario == 2 || VLTipoUsuario == 3) {
+                VLIDusuario = $('#hddIdusuario').val();
+            } else {
+                VLIDusuario = 0;
+            }
+
+            var VLIUsuarioSesion = $('#hddIdusuario').val();
+            $('#' + divMap).html("");
+            //var VLDepartamentos = lstDepartamentos.split(",");
+            //var VLProvincias = lstProvincias.split(",");
+            var VLDistritos = lstDistritos.split(",");
+            $.ajax({
+                type: "POST",
+                url: RutaPrincipal + 'votacion/wListarVotacion',
+                data: {
+                    "widusuario": VLIDusuario,
+                    "widvotacion": 0,
+                    "widpais": VLIUsuarioSesion,
+                    "widregion": "all",
+                    "widprovincia": "all",
+                    "widciudad": "all",
+                    "widdistrito": "all",
+                    "wsubigeo": "",
+                    "adfechaini": fechaanterior,
+                    "adfechafin": fechaactual,
+                    "wtipolistado": tipolistado
+                },
+                async: true,
+                success: function (res) {
+                    console.log(res);
+
+                    if (!res.aaData == "") {
+                        var sfechaini = "";
+                        $.each(res.aaData, function (index, value) {
+                            var sFechaConvert = moment(value.sfechaini, 'DD-MM-YYYY').format('LLLL');
+                            var SplitRes = sFechaConvert.split("0:00");
+                            var sDepartamento = value.idprovincia;
+                            var sProvincia = value.idciudad;
+                            var sCiudad = value.iddistrito;
+
+                            var arrDepartamento = sDepartamento.split(",");
+                            var arrProvincia = sProvincia.split(",");
+                            var arrCiudad = sCiudad.split(",");
+
+                            if (VLTipoUsuario == 2 || VLTipoUsuario == 3) {
+                                if (sfechaini == "") {
+                                    $('#' + divMap).append('<div class="row mt-4">' +
+                                        '<div class="col-12">' +
+                                        '<div class="mt-3 alert alert-secondary" role="alert"> ' + SplitRes[0] + ' </div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<div class="row">' +
+                                        '<div class="col-3">' +
+                                        '<label>' + value.shoraini + ' - ' + value.shorafin + '</label>' +
+                                        '<label>Horario de cierre</label>' +
+                                        '</div>' +
+                                        '<div class="col-6">' +
+                                        '<h4>' + value.snombre + '</h4>' +
+                                        '<p>' + value.sdescripcion + '</p>' +
+                                        '</div>' +
+                                        '<div class="col-3">' +
+                                        '<button class="mt-5 btn btn-inicio btnVotar" data-contvotusu="4" data-idvotacion="' + value.idvotacion + '">Ver</button>' +
+                                        '</div>' +
+                                        '</div>');
+                                    sfechaini = value.sfechaini;
+                                } else if (sfechaini == value.sfechaini) {
+                                    $('#' + divMap).append('<div class="row mt-4">' +
+                                        '<div class="col-3">' +
+                                        '<label>' + value.shoraini + ' - ' + value.shorafin + '</label>' +
+                                        '<label>Horario de cierre</label>' +
+                                        '</div>' +
+                                        '<div class="col-6">' +
+                                        '<h4>' + value.snombre + '</h4>' +
+                                        '<p>' + value.sdescripcion + '</p>' +
+                                        '</div>' +
+                                        '<div class="col-3">' +
+                                        '<button class="mt-5 btn btn-inicio btnVotar" data-contvotusu="4" data-idvotacion="' + value.idvotacion + '">Ver</button>' +
+                                        '</div>' +
+                                        '</div>');
+
+                                } else if (sfechaini != value.sfechaini) {
+                                    $('#' + divMap).append('<div class="row mt-4">' +
+                                        '<div class="col-12">' +
+                                        '<div class="mt-3 alert alert-secondary" role="alert"> ' + SplitRes[0] + ' </div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<div class="row">' +
+                                        '<div class="col-3">' +
+                                        '<label>' + value.shoraini + ' - ' + value.shorafin + '</label>' +
+                                        '<label>Horario de cierre</label>' +
+                                        '</div>' +
+                                        '<div class="col-6">' +
+                                        '<h4>' + value.snombre + '</h4>' +
+                                        '<p>' + value.sdescripcion + '</p>' +
+                                        '</div>' +
+                                        '<div class="col-3">' +
+                                        '<button class="mt-5 btn btn-inicio btnVotar" data-contvotusu="4" data-idvotacion="' + value.idvotacion + '">Ver</button>' +
+                                        '</div>' +
+                                        '</div>');
+                                    sfechaini = value.sfechaini;
+                                }
+
+                            } else {
+                                var valorButton;
+                                if (value.iestado == 0 && tipoTab != 3) {
+                                    valorButton = '<button class="mt-5 btn btn-inicio btnVotar" data-contvotusu="1" data-idvotacion="' + value.idvotacion + '">Votar</button>';
+                                } else if (value.iestado == 0 && tipoTab == 3) {
+                                    valorButton = '<button class="mt-5 btn btn-inicio btnVotar" data-contvotusu="2" disabled data-idvotacion="' + value.idvotacion + '">Voto finalizado</button>';
+                                } else if (value.iestado > 0 && tipoTab == 3) {
+                                    valorButton = '<button class="mt-5 btn btn-inicio btnVotar" disabled data-contvotusu="3" data-idvotacion="' + value.idvotacion + '">Votar</button>';
+                                } else if (value.iestado > 0 && tipoTab != 3) {
+                                    valorButton = '<button class="mt-5 btn btn-inicio btnVotar" data-contvotusu="2" data-idvotacion="' + value.idvotacion + '">Voto registrado</button>';
+                                }
+                                
+                                VLDistritos.filter(function (el) {
+                                    arrCiudad.filter(function (elciudad) {
+                                        if (el == elciudad) {
+                                            if (sfechaini == "") {
+                                                $('#' + divMap).append('<div class="row mt-4">' +
+                                                    '<div class="col-12">' +
+                                                    '<div class="mt-3 alert alert-secondary" role="alert"> ' + SplitRes[0] + ' </div>' +
+                                                    '</div>' +
+                                                    '</div>' +
+                                                    '<div class="row">' +
+                                                    '<div class="col-3">' +
+                                                    '<label>' + value.shoraini + ' - ' + value.shorafin + '</label>' +
+                                                    '<label>Horario de cierre</label>' +
+                                                    '</div>' +
+                                                    '<div class="col-6">' +
+                                                    '<h4>' + value.snombre + '</h4>' +
+                                                    '<p>' + value.sdescripcion + '</p>' +
+                                                    '</div>' +
+                                                    '<div class="col-3">' +
+                                                    valorButton +
+                                                    '</div>' +
+                                                    '</div>');
+                                                sfechaini = value.sfechaini;
+                                            } else if (sfechaini == value.sfechaini) {
+                                                $('#' + divMap).append('<div class="row mt-4">' +
+                                                    '<div class="col-3">' +
+                                                    '<label>' + value.shoraini + ' - ' + value.shorafin + '</label>' +
+                                                    '<label>Horario de cierre</label>' +
+                                                    '</div>' +
+                                                    '<div class="col-6">' +
+                                                    '<h4>' + value.snombre + '</h4>' +
+                                                    '<p>' + value.sdescripcion + '</p>' +
+                                                    '</div>' +
+                                                    '<div class="col-3">' +
+                                                    valorButton +
+                                                    '</div>' +
+                                                    '</div>');
+
+                                            } else if (sfechaini != value.sfechaini) {
+                                                $('#' + divMap).append('<div class="row mt-4">' +
+                                                    '<div class="col-12">' +
+                                                    '<div class="mt-3 alert alert-secondary" role="alert"> ' + SplitRes[0] + ' </div>' +
+                                                    '</div>' +
+                                                    '</div>' +
+                                                    '<div class="row">' +
+                                                    '<div class="col-3">' +
+                                                    '<label>' + value.shoraini + ' - ' + value.shorafin + '</label>' +
+                                                    '<label>Horario de cierre</label>' +
+                                                    '</div>' +
+                                                    '<div class="col-6">' +
+                                                    '<h4>' + value.snombre + '</h4>' +
+                                                    '<p>' + value.sdescripcion + '</p>' +
+                                                    '</div>' +
+                                                    '<div class="col-3">' +
+                                                    valorButton +
+                                                    '</div>' +
+                                                    '</div>');
+                                                sfechaini = value.sfechaini;
+                                            }
+                                        } else {
+
+                                        }
+                                    });
+                                });
+                            }
+
+
+                        });
+                    } else {
+                        if (VLTipoUsuario == 2 || VLTipoUsuario == 3) {
+                            $('#' + divMap).append('<div class="text-center"><label class="text-center">' + textoVacio + ' <br /> Para crear una nueva moción, haga clic en &nbsp;<b class="mt-4">Crear una moción</b></label></div>');
+                        } else {
+                            $('#' + divMap).append('<div class="text-center"><label class="text-center">' + textoVacio + '</label></div>');
+                        }
+
+                    }
+                    fnOcultarLoader();
+                    fnActivarVotar();
+                },
+                error: function (msg) {
+                    fnOcultarLoader();
+                },
+                complete: function (data) {
+                    // si acabo de completar
+                }
+            });
+
+        }
+
+        function fnActivarVotar() {
+            $('.btnVotar').click(function () {
+                var VLidvotacion = $(this).attr("data-idvotacion");
+                //VLContadorVotUsuario
+                // 1 : es nuevo, no ha hecho la votacion aun  = 1
+                // 2 : ya ha votado, le debe aparecer que ya ha realizado  = 2
+                // 3 : haya votado o no, ya finalizó y el boton se deshabilita = 3
+                // 4 : es admin o superadmin, solo debe ver la votacion = 4
+                var VLContadorVotUsuario = $(this).attr("data-contvotusu");
+                fnMostrarLoader();
+                localStorage.setItem("SESSIONIDVOT", VLidvotacion);
+                localStorage.setItem("SESSIONTIPOVOT", VLContadorVotUsuario);
+                window.location.href = RutaPrincipal + 'votacion/mocionUsuario';
+            });
+        }
+       
+
+        $(document).ready(function () {
+            fnOcultarLoader();
+            fn_ListarMociones(1);
+            $('#nav-home-tab').click(function () {
+                fn_ListarMociones(1);
+            });
+            $('#nav-profile-tab').click(function () {
+                fn_ListarMociones(2);
+            });
+            $('#nav-contact-tab').click(function () {
+                fn_ListarMociones(3);
+            });
+
+        });
+
+    </script>
+}

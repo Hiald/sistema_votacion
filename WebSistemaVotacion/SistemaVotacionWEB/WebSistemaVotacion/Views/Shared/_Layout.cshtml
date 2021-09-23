@@ -1,18 +1,259 @@
 ﻿<!DOCTYPE html>
+
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link href="~/Assets/Lib/bootstrap5/bootstrap.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Principal</title>
+    <link rel="icon" href="~/Assets/img/partido_morado.svg">
 
+    <link href="~/Assets/Lib/bootstrap5/bootstrap.css" rel="stylesheet" />
+    <link href="~/Assets/css/Layout.css" rel="stylesheet" />
+    <script>
+         var RutaPrincipal = "@Url.Content("~")";
+    </script>
+    <style>
+        main {
+            display: flex;
+            flex-wrap: nowrap;
+            height: 100vh !important;
+            height: -webkit-fill-available;
+            max-height: 100vh;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .bg-light {
+            background-color: #F2F2F7 !important;
+        }
+
+        .p-3 {
+            padding: 1rem 1rem 1rem 0 !important;
+        }
+
+        .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+            color: #fff;
+            background-color: #4F1B7F;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+            color: #4F1B7F;
+            background-color: #fff;
+            border-color: #fff;
+            font-size: 18px;
+            border-bottom: 3px solid;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+            font-size: 16px;
+        }
+
+            .nav-link:hover, .nav-link:focus {
+                color: #4F1B7F;
+            }
+
+        .container-left {
+            margin-left: 50px;
+            margin-right: 50px;
+        }
+
+        .padding-tab {
+            padding: 0.5rem 2rem;
+        }
+
+        .navlink2 {
+            color: #828282;
+        }
+
+        .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
+            border-color: #fff #fff #fff;
+            isolation: isolate;
+            border-bottom: 3px solid;
+        }
+
+        .nav-pills .nav-link {
+            background: none;
+            border: 0;
+            border-radius: 0;
+        }
+
+        .btn-outline-primary:hover {
+            color: black;
+            background-color: #fff;
+            border-color: #fff;
+        }
+
+        .btn-outline-primary {
+            color: black;
+            background-color: #fff;
+            border-color: #fff;
+        }
+
+            .btn-check:checked + .btn-outline-primary:focus, .btn-check:active + .btn-outline-primary:focus, .btn-outline-primary:active:focus, .btn-outline-primary.active:focus, .btn-outline-primary.dropdown-toggle.show:focus {
+                box-shadow: unset !important;
+            }
+
+            .btn-check:checked + .btn-outline-primary, .btn-check:active + .btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show {
+                color: black;
+                background-color: #fff;
+                border-color: #fff;
+            }
+
+            .btn-check:focus + .btn-outline-primary, .btn-outline-primary:focus {
+                box-shadow: unset;
+            }
+
+        .opcion-sesion {
+            background: #4F1B7F;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        @RenderBody()
+    <main style="overflow-y: auto;">
+        <div id="barraLateral" class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+            <a href="@Url.Action("principal","inicio")" class="text-center mb-5 link-dark text-decoration-none">
+                <img height="80" src="~/Assets/img/partido_morado.svg" alt="logo" />
+            </a>
+            @if (ViewBag.VBTipoUsuario == 1)
+            {
+                <h6 class="h6" style="margin-left:20px;color:#4F1B7F;">Personal</h6>
+            }
+            else if (ViewBag.VBTipoUsuario == 2)
+            {
+                <h5 class="h5" style="margin-left:20px;color:#4F1B7F;">Administrador</h5>
+            }
+            else if (ViewBag.VBTipoUsuario == 3)
+            {
+                <h5 class="h5" style="margin-left:20px;color:#4F1B7F;">Super Administrador</h5>
+            }
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="@Url.Action("perfil","inicio")" class="nav-link link-dark @ViewBag.MenuPerfil" aria-current="page">
+                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                        @if (ViewBag.MenuPerfil != "")
+                        {
+                            <img src="~/Assets/img/clipboard.svg" class="mb-2" height="20" />
+                        }
+                        &nbsp;Perfil
+                    </a>
+                </li>
+                <li>
+                    <a href="@Url.Action("principal","inicio")" class="nav-link link-dark @ViewBag.MenuMocion">
+                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                        @if (ViewBag.MenuMocion != "")
+                        {
+                            <img src="~/Assets/img/clipboard.svg" class="mb-2" height="20" />
+                        }
+                        &nbsp;Mociones
+                    </a>
+                </li>
+                @if (ViewBag.VBTipoUsuario == 3)
+                {
+                    <li>
+                        <a href="@Url.Action("cuenta","inicio")" class="nav-link link-dark @ViewBag.MenuUsuario">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                            @if (ViewBag.MenuUsuario != "")
+                            {
+                                <img src="~/Assets/img/clipboard.svg" class="mb-2" height="20" />
+                            }
+                            &nbsp;Usuarios
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            @*<hr>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                        <strong>mdo</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>*@
+        </div>
+
+        <div class="container container-left">
+
+            <nav class="navbar navbar-light bg-white pt-0 pb-0">
+                <form class="container-fluid justify-content-end">
+                    <img height="30" src="~/Assets/img/campana.png" style="margin-right: 20px;" />
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="~/Assets/img/Avatar1.svg" width="60" height="60" class="rounded-circle">
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">@ViewBag.VBNombres</a></li>
+                            <li><a class="dropdown-item" href="#">@ViewBag.VBCorreo</a></li>
+                            <li><a class="dropdown-item opcion-sesion" onclick="fnDesconectar();" href="#">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+
+                </form>
+            </nav>
+
+            @RenderBody()
+
+        </div>
+    </main>
+
+
+    <div id="fnCarga">
+        <div class="divLoader" id="divcarga">
+            <div class="loader">
+                <svg viewBox="0 0 80 80">
+                    <circle id="test" cx="40" cy="40" r="32"></circle>
+                </svg>
+            </div>
+        </div>
     </div>
+
+    <script src="~/Assets/Lib/momentjs/moment.js"></script>
+    <script src="~/Assets/Lib/momentjs/es-mx.min.js"></script>
     <script src="~/Assets/Lib/bootstrap5/bootstrap.bundle.js"></script>
+    <script src="~/Assets/Lib/jquery/jquery.js"></script>
     @RenderSection("scripts", required: false)
+    <script>
+        function fnRegresar(ruta) {
+            window.location.href = RutaPrincipal + ruta;
+        }
+
+        function fnMostrarLoader() {
+            $('#fnCarga').css("display", "block");
+        }
+
+        function fnOcultarLoader() {
+            $('#fnCarga').css("display", "none");
+        }
+
+        function fnDesconectar() {
+            $.ajax({
+                type: "POST",
+                url: RutaPrincipal + 'inicio/cerrarSesion',
+                async: false,
+                success: function (msg) {
+                    window.location.href = RutaPrincipal + "Inicio/inicio?ivalorsesion=0&valorlogin=vacio";
+                },
+                error: function (msg) {
+                    //location.reload();
+                    window.location.href = RutaPrincipal + "Inicio/inicio?ivalorsesion=0&valorlogin=vacio";
+                },
+                complete: function (data) {
+                    // si acabo de completar
+                }
+            });
+        }
+    </script>
 </body>
 </html>

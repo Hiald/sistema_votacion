@@ -1,0 +1,520 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .form-labelv1 {
+        vertical-align: -webkit-baseline-middle;
+    }
+
+    #barraLateral {
+        height: 165vh;
+    }
+</style>
+
+<div class="row mt-3 mb-5">
+    <div class="h3" id="txtitulo">
+
+    </div>
+</div>
+
+<div class="mt-4 mb-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-primary" role="alert" style="background: #F2F2F7;border:0;color:black;">
+                <div class="row justify-content-start">
+                    <div class="col-12">
+                        <h4>Información</h4>
+                    </div>
+                </div>
+                <div class="row text-centet justify-content-start">
+                    <div class="col-12 mb-5 mt-3">
+                        <p id="txDescripcion"></p>
+                    </div>
+                </div>
+                <div class="row text-center justify-content-start">
+                    <div class="col-4" id="div1"></div>
+                    <div class="col-4" id="div2"></div>
+                    <div class="col-4" id="div3"></div>
+                    <div class="col-4" id="div4"></div>
+                    <div class="col-4" id="div5"></div>
+                    <div class="col-4" id="div6"></div>
+                    <div class="col-4" id="div7"></div>
+                    <div class="col-4" id="div8"></div>
+                    <div class="col-4" id="div9"></div>
+                    <div class="col-4" id="div10"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #4F1B7F;">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                    <img class="imgcheck" src="~/Assets/img/icono_check.svg" />
+                </h5>
+            </div>
+            <div class="modal-body text-center justify-content-center">
+                <h3>¡Registro exitoso!</h3>
+                <h5>La votación ha sido enviada</h5>
+            </div>
+            <div class="modal-footer text-center justify-content-center">
+                <button type="button" class="btn btn-inicio" onclick="fnRegresar('inicio/principal');">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalObservacion" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #4F1B7F;">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                    <img class="imgcheck" src="~/Assets/img/icono_info.svg" />
+                </h5>
+            </div>
+            <div class="modal-body text-center justify-content-center">
+                <h4 style="color:#4F1B7F;" class="mb-3">¿Confirma su respuesta para esta moción?</h4>
+                <p>Puede agregar comentarios adicionales para complementar la elección de su votación.</p>
+                <div class="row text-left">
+                    <div class="col-12">
+                        <p class="text-left" style="margin-bottom: 5px;" for="txObservacion">Comentarios (opcional)</p>
+                        <textarea placeholder="Escriba su opinión aquí." id="txObservacion" class="form-control pl-3 pr-3" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center justify-content-center">
+                <button type="button" class="btn btn-iniciov2" onclick="RegistrarVotacion();">Aceptar</button>
+                <button type="button" class="btn btn-iniciov3" data-bs-dismiss="modal" id="btnCancelar">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalsesion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #4F1B7F;">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                    <img class="imgcheck" src="~/Assets/img/icono_info.svg" />
+                </h5>
+            </div>
+            <div class="modal-body text-center justify-content-center">
+                <h4 style="color:#4F1B7F;" class="mb-3">¡Oh no!</h4>
+                <p>Tu sesión acaba de vencer, intenta nuevamente.</p>
+            </div>
+            <div class="modal-footer text-center justify-content-center">
+                <button type="button" class="btn btn-iniciov2" onclick="fnRegresar('inicio/principal');">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input id="hddIdusuario" type="hidden" value="@ViewBag.VBIDusuario" />
+<input id="hddTipoUsuario" type="hidden" value="@ViewBag.VBTipoUsuario" />
+<input id="hddIdvotacion" type="hidden" value="" />
+
+@if (ViewBag.VBTipoUsuario == 3 || ViewBag.VBTipoUsuario == 2)
+{
+    <div class="row" id="btnAdmin">
+        <div class="col-md-6">
+            <canvas id="bar-chart" width="400" height="300"></canvas>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    @if (ViewBag.VBTipoUsuario == 3 || ViewBag.VBTipoUsuario == 2)
+    {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
+        <script>
+            new Chart(document.getElementById("bar-chart"), {
+                type: 'bar',
+                data: {
+                    labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
+                    datasets: [
+                        {
+                            label: "Population (millions)",
+                            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                            data: [2478, 5267, 734, 784, 433]
+                        }
+                    ]
+                },
+                options: {
+                    legend: { display: false },
+                    title: {
+                        display: true,
+                        text: 'Predicted world population (millions) in 2050'
+                    }
+                }
+            });
+        </script>
+    }
+    <script>
+        var iIDvot = 0;
+        var itipovot = 0;
+        function fn_ListarMocion(idvotacion, itipovotacion) {
+            fnMostrarLoader();
+            // 1 : es nuevo, no ha hecho la votacion aun  = 1
+            // 2 : ya ha votado, le debe aparecer que ya ha realizado  = 2
+            // 3 : haya votado o no, ya finalizó y el boton se deshabilita = 3
+            // 4 : es admin o superadmin, solo debe ver la votacion = 4
+            if (itipovotacion == 4) {
+                $.ajax({
+                    type: "POST",
+                    url: RutaPrincipal + 'votacion/wListarVotacion',
+                    data: {
+                        "widusuario": 0,
+                        "widvotacion": idvotacion,
+                        "widpais": 0,
+                        "widregion": "all",
+                        "widprovincia": "all",
+                        "widciudad": "all",
+                        "widdistrito": "all",
+                        "wsubigeo": "",
+                        "adfechaini": 'vacio',
+                        "adfechafin": 'vacio',
+                        "wtipolistado": 4
+                    },
+                    async: true,
+                    success: function (res) {
+                        //console.log(res);
+
+                        if (!res.aaData == "") {
+                            $('#hddIdvotacion').val(res.aaData[0].idvotacion);
+                            $('#txtitulo').text('Mociones > ' + res.aaData[0].snombre);
+                            $('#txDescripcion').text(res.aaData[0].sdescripcion);
+
+                            if (res.aaData[0].ipregunta_1 == 1) {
+                                $('#div1').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_1 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_2 == 1) {
+                                $('#div2').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_2 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_3 == 1) {
+                                $('#div3').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_3 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_4 == 1) {
+                                $('#div4').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_4 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_5 == 1) {
+                                $('#div5').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_5 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_6 == 1) {
+                                $('#div6').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_6 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_7 == 1) {
+                                $('#div7').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_7 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_8 == 1) {
+                                $('#div8').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_8 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_9 == 1) {
+                                $('#div9').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_9 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_10 == 1) {
+                                $('#div10').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_10 + '</button>');
+                            }
+
+                        } else {
+                            //$('#bodyMociones').append('<div class="text-center"><label class="text-center">No hay datos.</label></div>');
+
+                        }
+
+                        fnOcultarLoader();
+                        fn_ActivarElegir();
+                    },
+                    error: function (msg) {
+                        fnOcultarLoader();
+                    },
+                    complete: function (data) {
+                        // si acabo de completar
+                    }
+                });
+            } else if (itipovotacion == 1) {
+                $.ajax({
+                    type: "POST",
+                    url: RutaPrincipal + 'votacion/wListarVotacion',
+                    data: {
+                        "widusuario": 0,
+                        "widvotacion": idvotacion,
+                        "widpais": 0,
+                        "widregion": "all",
+                        "widprovincia": "all",
+                        "widciudad": "all",
+                        "widdistrito": "all",
+                        "wsubigeo": "",
+                        "adfechaini": 'vacio',
+                        "adfechafin": 'vacio',
+                        "wtipolistado": 4
+                    },
+                    async: true,
+                    success: function (res) {
+                        //console.log(res);
+
+                        if (!res.aaData == "") {
+                            $('#hddIdvotacion').val(res.aaData[0].idvotacion);
+                            $('#txtitulo').text('Mociones > ' + res.aaData[0].snombre);
+                            $('#txDescripcion').text(res.aaData[0].sdescripcion);
+
+                            if (res.aaData[0].ipregunta_1 == 1) {
+                                $('#div1').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="1">' + res.aaData[0].spregunta_1 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_2 == 1) {
+                                $('#div2').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="2">' + res.aaData[0].spregunta_2 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_3 == 1) {
+                                $('#div3').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="3">' + res.aaData[0].spregunta_3 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_4 == 1) {
+                                $('#div4').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="4">' + res.aaData[0].spregunta_4 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_5 == 1) {
+                                $('#div5').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="5">' + res.aaData[0].spregunta_5 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_6 == 1) {
+                                $('#div6').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="6">' + res.aaData[0].spregunta_6 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_7 == 1) {
+                                $('#div7').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="7">' + res.aaData[0].spregunta_7 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_8 == 1) {
+                                $('#div8').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="8">' + res.aaData[0].spregunta_8 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_9 == 1) {
+                                $('#div9').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="9">' + res.aaData[0].spregunta_9 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_10 == 1) {
+                                $('#div10').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="10">' + res.aaData[0].spregunta_10 + '</button>');
+                            }
+
+                        } else {
+                            //$('#bodyMociones').append('<div class="text-center"><label class="text-center">No hay datos.</label></div>');
+
+                        }
+
+                        fnOcultarLoader();
+                        fn_ActivarElegir();
+                    },
+                    error: function (msg) {
+                        fnOcultarLoader();
+                    },
+                    complete: function (data) {
+                        // si acabo de completar
+                    }
+                });
+            } else if (itipovotacion == 2) {
+                $.ajax({
+                    type: "POST",
+                    url: RutaPrincipal + 'votacion/wListarVotacion',
+                    data: {
+                        "widusuario": 0,
+                        "widvotacion": idvotacion,
+                        "widpais": 0,
+                        "widregion": "all",
+                        "widprovincia": "all",
+                        "widciudad": "all",
+                        "widdistrito": "all",
+                        "wsubigeo": "",
+                        "adfechaini": 'vacio',
+                        "adfechafin": 'vacio',
+                        "wtipolistado": 4
+                    },
+                    async: true,
+                    success: function (res) {
+                        //console.log(res);
+
+                        if (!res.aaData == "") {
+                            $('#hddIdvotacion').val(res.aaData[0].idvotacion);
+                            $('#txtitulo').text('Mociones > ' + res.aaData[0].snombre);
+                            $('#txDescripcion').text(res.aaData[0].sdescripcion);
+
+                            if (res.aaData[0].ipregunta_1 == 1) {
+                                $('#div1').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_1 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_2 == 1) {
+                                $('#div2').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_2 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_3 == 1) {
+                                $('#div3').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_3 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_4 == 1) {
+                                $('#div4').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_4 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_5 == 1) {
+                                $('#div5').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_5 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_6 == 1) {
+                                $('#div6').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_6 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_7 == 1) {
+                                $('#div7').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_7 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_8 == 1) {
+                                $('#div8').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_8 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_9 == 1) {
+                                $('#div9').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_9 + '</button>');
+                            }
+                            if (res.aaData[0].ipregunta_10 == 1) {
+                                $('#div10').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_10 + '</button>');
+                            }
+
+                        } else {
+                            //$('#bodyMociones').append('<div class="text-center"><label class="text-center">No hay datos.</label></div>');
+
+                        }
+
+                        fnOcultarLoader();
+                        fn_ActivarElegir();
+                    },
+                    error: function (msg) {
+                        fnOcultarLoader();
+                    },
+                    complete: function (data) {
+                        // si acabo de completar
+                    }
+                });
+            }
+
+        }
+
+        $(document).ready(function () {
+            //fnOcultarLoader();
+            if (localStorage.getItem("SESSIONIDVOT") === null || localStorage.getItem("SESSIONTIPOVOT") === null) {
+                window.location.href = RutaPrincipal + 'inicio/principal';
+            } else {
+                iIDvot = localStorage.getItem("SESSIONIDVOT");
+                itipovot = localStorage.getItem("SESSIONTIPOVOT");
+                fn_ListarMocion(iIDvot, itipovot);
+            }
+            if (itipovot != 4) {
+                setTimeout(function () {
+                    var modalsesion = new bootstrap.Modal(document.getElementById('modalsesion'), { backdrop: 'static' });
+                    modalsesion.show();
+                }, 300000);
+            }
+        });
+
+        var VGivalor = 0;
+        function fn_ActivarElegir() {
+            $('.btnElegir').click(function () {
+                var VLivalor = $(this).attr('data-ivalor');
+                VGivalor = VLivalor;
+                var modal = new bootstrap.Modal(document.getElementById('modalObservacion'));
+                modal.show();
+            });
+        }
+
+        function RegistrarVotacion() {
+            var txobservacion = $('#txObservacion').val();
+            var idvotacion = $('#hddIdvotacion').val();
+            var sfecharegistro = moment().format("YYYY-MM-DD");
+            var shora = moment().format("hh:mm:ss");
+            var idusuario = $('#hddIdusuario').val();
+            var icontador1 = 0;
+            var icontador2 = 0;
+            var icontador3 = 0;
+            var icontador4 = 0;
+            var icontador5 = 0;
+            var icontador6 = 0;
+            var icontador7 = 0;
+            var icontador8 = 0;
+            var icontador9 = 0;
+            var icontador10 = 0;
+
+            switch (VGivalor) {
+                case '1': icontador1 = 1; break;
+                case '2': icontador2 = 1; break;
+                case '3': icontador3 = 1; break;
+                case '4': icontador4 = 1; break;
+                case '5': icontador5 = 1; break;
+                case '6': icontador6 = 1; break;
+                case '7': icontador7 = 1; break;
+                case '8': icontador8 = 1; break;
+                case '9': icontador9 = 1; break;
+                case '10': icontador10 = 1; break;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: RutaPrincipal + 'votacion/wInsertarVotacionUsuario',
+                data: {
+                    "witipoact": 2,
+                    "idvotacionusu": 0,
+                    "widvotacion": idvotacion,
+                    "widusuario": idusuario,
+                    "wsrepuesta": "",
+                    "wicantopc": 0,
+                    "wipregunta1": icontador1,
+                    "wipregunta2": icontador2,
+                    "wipregunta3": icontador3,
+                    "wipregunta4": icontador4,
+                    "wipregunta5": icontador5,
+                    "wipregunta6": icontador6,
+                    "wipregunta7": icontador7,
+                    "wipregunta8": icontador8,
+                    "wipregunta9": icontador9,
+                    "wipregunta10": icontador10,
+                    "wobservacion": txobservacion,
+                    "wiestado": 1,
+                    "wsfechareg": sfecharegistro,
+                    "wshorareg": shora,
+                    "wsfechamod": "",
+                    "wshoramod": ""
+                },
+                async: false,
+                success: function (msg) {
+                    $('#btnCancelar').click();
+                    var modalsesion = new bootstrap.Modal(document.getElementById('staticBackdrop'), { backdrop: 'static' });
+                    modalsesion.show();
+                },
+                error: function (msg) {
+                    fnOcultarLoader();
+                },
+                complete: function (data) {
+                    // si acabo de completar
+                }
+            });
+        }
+
+        $('#btnVerDatos').click(function () {
+            var VLidVotacion = $('#hddIdvotacion').val();
+            $.ajax({
+                type: "POST",
+                url: RutaPrincipal + 'votacion/wListarVotacionUsuario',
+                data: {
+                    "widusuario": 0,
+                    "widvotacionusuario": VLidVotacion
+                },
+                async: true,
+                success: function (res) {
+                    console.log("lista feedback usuario");
+                    console.log(res);
+
+                    if (!res.aaData == "") {
+                        $.each(res.aaData, function (index, value) {
+
+                        });
+                    } else {
+                        //$('#bodyMociones').append('<div class="text-center"><label class="text-center">No hay datos.</label></div>');
+
+                    }
+
+                    fnOcultarLoader();
+                    fn_ActivarElegir();
+                },
+                error: function (msg) {
+                    fnOcultarLoader();
+                },
+                complete: function (data) {
+                    // si acabo de completar
+                }
+            });
+        });
+    </script>
+}

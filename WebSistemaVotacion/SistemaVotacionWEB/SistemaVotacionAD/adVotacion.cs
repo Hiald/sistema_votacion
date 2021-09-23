@@ -16,14 +16,14 @@ namespace SistemaVotacionAD
             cnMysql = cn;
         }
 
-        public int adInsertarVotacion(int aditipoactualizar, int adidvotacion, int adidusuario, int adidpais, int adidregion,
-            int adidprovincia, int adidciudad, int adiddistrito, string adubigeo, string adsnombre, string addescripcion,
+        public int adInsertarVotacion(int aditipoactualizar, int adidvotacion, int adidusuario, int adidpais, string adidregion,
+            string adidprovincia, string adidciudad, string adiddistrito, string adubigeo, string adsnombre, string addescripcion,
             int aditipovotacion, int aditipotiempo, int aditiempo, int adbtiempofechahora, string adtiempofecha, string adtiempohora,
             int adirespuesta, string adsrespuesta, int adivariasopc, int adicantidadopc, int adivotcant, int adipreg1, string adspreg1,
             int adipreg2, string adspreg2, int adipreg3, string adspreg3, int adipreg4, string adspreg4, int adipreg5, string adspreg5,
             int adipreg6, string adspreg6, int adipreg7, string adspreg7, int adipreg8, string adspreg8, int adipreg9, string adspreg9,
             int adipreg10, string adspreg10, string adobs, int adiestado, string adsfechareg, string adshorareg, string adsfechamod,
-            string adshoramod)
+            string adshoramod, string adfechaini, string horaini, string horafin, string adfechafin)
         {
             try
             {
@@ -34,10 +34,10 @@ namespace SistemaVotacionAD
                 cmd.Parameters.Add("_idvotacion", MySqlDbType.Int32).Value = adidvotacion;
                 cmd.Parameters.Add("_idusuario", MySqlDbType.Int32).Value = adidusuario;
                 cmd.Parameters.Add("_idpais", MySqlDbType.Int32).Value = adidpais;
-                cmd.Parameters.Add("_idregion", MySqlDbType.Int32).Value = adidregion;
-                cmd.Parameters.Add("_idprovincia", MySqlDbType.Int32).Value = adidprovincia;
-                cmd.Parameters.Add("_idciudad", MySqlDbType.Int32).Value = adidciudad;
-                cmd.Parameters.Add("_iddistrito", MySqlDbType.Int32).Value = adiddistrito;
+                cmd.Parameters.Add("_idregion", MySqlDbType.VarChar, 50).Value = adidregion;
+                cmd.Parameters.Add("_idprovincia", MySqlDbType.VarChar, 250).Value = adidprovincia;
+                cmd.Parameters.Add("_idciudad", MySqlDbType.VarChar, 1000).Value = adidciudad;
+                cmd.Parameters.Add("_iddistrito", MySqlDbType.VarChar, 2500).Value = adiddistrito;
                 cmd.Parameters.Add("_v_ubigeo", MySqlDbType.VarChar, 10).Value = adubigeo;
                 cmd.Parameters.Add("_v_nombre", MySqlDbType.VarChar, 150).Value = adsnombre;
                 cmd.Parameters.Add("_v_descripcion", MySqlDbType.VarChar, 500).Value = addescripcion;
@@ -78,6 +78,10 @@ namespace SistemaVotacionAD
                 cmd.Parameters.Add("_v_horaregistro", MySqlDbType.VarChar, 25).Value = adshorareg;
                 cmd.Parameters.Add("_v_fechamodificacion", MySqlDbType.VarChar, 25).Value = adsfechamod;
                 cmd.Parameters.Add("_v_horamodificacion", MySqlDbType.VarChar, 25).Value = adshoramod;
+                cmd.Parameters.Add("_dt_fecha_ini", MySqlDbType.VarChar, 25).Value = adfechaini;
+                cmd.Parameters.Add("_dt_hora_ini", MySqlDbType.VarChar, 25).Value = horaini;
+                cmd.Parameters.Add("_dt_fecha_fin", MySqlDbType.VarChar, 25).Value = adfechafin;
+                cmd.Parameters.Add("_dt_hora_fin", MySqlDbType.VarChar, 25).Value = horafin;
 
                 result = Convert.ToInt32(cmd.ExecuteScalar());
                 return result;
@@ -89,8 +93,8 @@ namespace SistemaVotacionAD
             }
         }
 
-        public List<edVotacion> adListarVotacion(int adidusuario, int adidvotacion, int adidpais, int adidregion, int adidprovincia,
-                int adidciudad, int adiddistrito, string adsubigeo)
+        public List<edVotacion> adListarVotacion(int adidusuario, int adidvotacion, int adidpais, string adidregion, string adidprovincia,
+                string adidciudad, string adiddistrito, string adsubigeo, string adfechaini, string adfechafin, int adtipolistado)
         {
             try
             {
@@ -101,11 +105,14 @@ namespace SistemaVotacionAD
                     cmd.Parameters.Add("_idusuario", MySqlDbType.Int32).Value = adidusuario;
                     cmd.Parameters.Add("_idvotacion", MySqlDbType.Int32).Value = adidvotacion;
                     cmd.Parameters.Add("_idpais", MySqlDbType.Int32).Value = adidpais;
-                    cmd.Parameters.Add("_idregion", MySqlDbType.Int32).Value = adidregion;
-                    cmd.Parameters.Add("_idprovincia", MySqlDbType.Int32).Value = adidprovincia;
-                    cmd.Parameters.Add("_idciudad", MySqlDbType.Int32).Value = adidciudad;
-                    cmd.Parameters.Add("_iddistrito", MySqlDbType.Int32).Value = adiddistrito;
+                    cmd.Parameters.Add("_idregion", MySqlDbType.VarChar, 50).Value = adidregion;
+                    cmd.Parameters.Add("_idprovincia", MySqlDbType.VarChar, 1000).Value = adidprovincia;
+                    cmd.Parameters.Add("_idciudad", MySqlDbType.VarChar, 1000).Value = adidciudad;
+                    cmd.Parameters.Add("_iddistrito", MySqlDbType.VarChar, 2500).Value = adiddistrito;
                     cmd.Parameters.Add("_v_ubigeo", MySqlDbType.VarChar, 10).Value = adsubigeo;
+                    cmd.Parameters.Add("_fechainicial", MySqlDbType.VarChar, 25).Value = adfechaini;
+                    cmd.Parameters.Add("_fechafinal", MySqlDbType.VarChar, 25).Value = adfechafin;
+                    cmd.Parameters.Add("_tipolistado", MySqlDbType.Int32).Value = adtipolistado;
                     using (MySqlDataReader mdrd = cmd.ExecuteReader())
                     {
                         if (mdrd != null)
@@ -159,6 +166,10 @@ namespace SistemaVotacionAD
                             int pos_bestado = mdrd.GetOrdinal("b_estado");
                             int pos_dtfecharegistro = mdrd.GetOrdinal("dt_fecharegistro");
                             int pos_vhoraregistro = mdrd.GetOrdinal("v_horaregistro");
+                            int pos_dtfechaini = mdrd.GetOrdinal("dt_fecha_ini");
+                            int pos_dthoraini = mdrd.GetOrdinal("dt_hora_ini");
+                            int pos_dtfechafin = mdrd.GetOrdinal("dt_fecha_fin");
+                            int pos_dthorafin = mdrd.GetOrdinal("dt_hora_fin");
 
                             while (mdrd.Read())
                             {
@@ -169,10 +180,10 @@ namespace SistemaVotacionAD
                                 senUsuario.idvotacion = (mdrd.IsDBNull(pos_idvotacion) ? 0 : mdrd.GetInt32(pos_idvotacion));
                                 senUsuario.idusuario = (mdrd.IsDBNull(pos_idusuario) ? 0 : mdrd.GetInt32(pos_idusuario));
                                 senUsuario.idpais = (mdrd.IsDBNull(pos_idpais) ? 0 : mdrd.GetInt32(pos_idpais));
-                                senUsuario.idregion = (mdrd.IsDBNull(pos_idregion) ? 0 : mdrd.GetInt32(pos_idregion));
-                                senUsuario.idprovincia = (mdrd.IsDBNull(pos_idprovincia) ? 0 : mdrd.GetInt32(pos_idprovincia));
-                                senUsuario.idciudad = (mdrd.IsDBNull(pos_idciudad) ? 0 : mdrd.GetInt32(pos_idciudad));
-                                senUsuario.iddistrito = (mdrd.IsDBNull(pos_iddistrito) ? 0 : mdrd.GetInt32(pos_iddistrito));
+                                senUsuario.idregion = (mdrd.IsDBNull(pos_idregion) ? "" : mdrd.GetString(pos_idregion));
+                                senUsuario.idprovincia = (mdrd.IsDBNull(pos_idprovincia) ? "" : mdrd.GetString(pos_idprovincia));
+                                senUsuario.idciudad = (mdrd.IsDBNull(pos_idciudad) ? "" : mdrd.GetString(pos_idciudad));
+                                senUsuario.iddistrito = (mdrd.IsDBNull(pos_iddistrito) ? "" : mdrd.GetString(pos_iddistrito));
                                 senUsuario.subigeo = (mdrd.IsDBNull(pos_vubigeo) ? "-" : mdrd.GetString(pos_vubigeo));
                                 senUsuario.snombre = (mdrd.IsDBNull(pos_snombre) ? "-" : mdrd.GetString(pos_snombre));
                                 senUsuario.sdescripcion = (mdrd.IsDBNull(pos_sdescripcion) ? "-" : mdrd.GetString(pos_sdescripcion));
@@ -211,6 +222,10 @@ namespace SistemaVotacionAD
                                 senUsuario.iestado = (mdrd.IsDBNull(pos_bestado) ? 0 : mdrd.GetInt32(pos_bestado));
                                 senUsuario.sfecharegistro = (mdrd.IsDBNull(pos_dtfecharegistro) ? "-" : mdrd.GetString(pos_dtfecharegistro));
                                 senUsuario.shoraregistro = (mdrd.IsDBNull(pos_vhoraregistro) ? "-" : mdrd.GetString(pos_vhoraregistro));
+                                senUsuario.sfechaini = (mdrd.IsDBNull(pos_dtfechaini) ? "-" : mdrd.GetString(pos_dtfechaini));
+                                senUsuario.shoraini = (mdrd.IsDBNull(pos_dthoraini) ? "-" : mdrd.GetString(pos_dthoraini));
+                                senUsuario.sfechafin = (mdrd.IsDBNull(pos_dtfechafin) ? "-" : mdrd.GetString(pos_dtfechafin));
+                                senUsuario.shorafin = (mdrd.IsDBNull(pos_dthorafin) ? "-" : mdrd.GetString(pos_dthorafin));
 
                                 lstmaestro.Add(senUsuario);
                             }

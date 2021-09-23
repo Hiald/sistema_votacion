@@ -127,6 +127,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\inicioController.cs" />
+    <Compile Include="Controllers\votacionController.cs" />
     <Compile Include="Filters\ValidadorSesion.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -134,13 +135,29 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\css\Layout.css" />
+    <Content Include="Assets\img\Avatar1.svg" />
+    <Content Include="Assets\img\Avatar2.svg" />
+    <Content Include="Assets\img\Avatar3.svg" />
+    <Content Include="Assets\img\Avatar4.svg" />
+    <Content Include="Assets\img\calendario.svg" />
+    <Content Include="Assets\img\campana.png" />
+    <Content Include="Assets\img\clipboard.svg" />
+    <Content Include="Assets\img\icono_check.svg" />
+    <Content Include="Assets\img\icono_info.svg" />
+    <Content Include="Assets\img\partido_morado.svg" />
+    <Content Include="Assets\img\xbg_1.jpg" />
+    <Content Include="Assets\js\Departamentos.js" />
     <Content Include="Assets\Lib\bootstrap5\bootstrap.bundle.js" />
     <Content Include="Assets\Lib\bootstrap5\bootstrap.css" />
     <Content Include="Assets\Lib\jquery\jquery.js" />
+    <Content Include="Assets\Lib\momentjs\es-mx.min.js" />
     <Content Include="Assets\Lib\momentjs\moment.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -166,6 +183,13 @@
     <Content Include="Views\inicio\Index.cshtml" />
     <Content Include="Views\inicio\inicio.cshtml" />
     <Content Include="Views\inicio\registro.cshtml" />
+    <Content Include="Views\inicio\principal.cshtml" />
+    <Content Include="Views\inicio\mocion.cshtml" />
+    <Content Include="Views\votacion\nuevaMocion.cshtml" />
+    <Content Include="Views\inicio\cuenta.cshtml" />
+    <Content Include="Views\inicio\nuevaCuenta.cshtml" />
+    <Content Include="Views\votacion\mocionUsuario.cshtml" />
+    <Content Include="Views\inicio\perfil.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FrontendUtil\FrontendUtil.csproj">

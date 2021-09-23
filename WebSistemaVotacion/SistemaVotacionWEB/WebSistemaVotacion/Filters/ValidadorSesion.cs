@@ -4,7 +4,7 @@ using FrontendUtil;
 
 namespace WebSistemaVotacion.Filters
 {
-    public class ValidadorSesion : ActionFilterAttribute
+    public class ValidadorSesionVista : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
@@ -20,7 +20,9 @@ namespace WebSistemaVotacion.Filters
                             { "valorlogin", "vacio" }
                         });
 
+
             }
+
             base.OnActionExecuting(filterContext);
         }
     }

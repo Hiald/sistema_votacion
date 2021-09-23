@@ -22,6 +22,9 @@ namespace FrontendUtil
         private const string SESSION_ITIPOUSUARIO = "SESSION_ITIPOUSUARIO";
         private const string SESSION_ITIPODOC = "SESSION_ITIPODOC";
         private const string SESSION_SNUMDOC = "SESSION_SNUMDOC";
+        private const string SESSION_SDEPARTAMENTOS = "SESSION_SDEPARTAMENTOS";
+        private const string SESSION_SPROVINCIAS = "SESSION_SPROVINCIAS";
+        private const string SESSION_SDISTRITOS = "SESSION_SDISTRITOS";
 
         #region "Obtiene Datos del Usuario"
 
@@ -77,6 +80,18 @@ namespace FrontendUtil
         {
             return ((HttpContext.Current.Session[SESSION_SNUMDOC] == null) ? "" : HttpContext.Current.Session[SESSION_SNUMDOC].ToString());
         }
+        public static string ObtenerDepartamentos()
+        {
+            return ((HttpContext.Current.Session[SESSION_SDEPARTAMENTOS] == null) ? "" : HttpContext.Current.Session[SESSION_SDEPARTAMENTOS].ToString());
+        }
+        public static string ObtenerProvincias()
+        {
+            return ((HttpContext.Current.Session[SESSION_SPROVINCIAS] == null) ? "" : HttpContext.Current.Session[SESSION_SPROVINCIAS].ToString());
+        }
+        public static string ObtenerDistritos()
+        {
+            return ((HttpContext.Current.Session[SESSION_SDISTRITOS] == null) ? "" : HttpContext.Current.Session[SESSION_SDISTRITOS].ToString());
+        }
 
         public static string ObtenerFechaSistema()
         {
@@ -100,6 +115,9 @@ namespace FrontendUtil
                 HttpContext.Current.Session[SESSION_ITIPOUSUARIO] = DVariables["ITIPOUSUARIO"];
                 HttpContext.Current.Session[SESSION_ITIPODOC] = DVariables["ITIPODOC"];
                 HttpContext.Current.Session[SESSION_SNUMDOC] = DVariables["SNUMDOC"];
+                HttpContext.Current.Session[SESSION_SDEPARTAMENTOS] = DVariables["SDEPARTAMENTOS"];
+                HttpContext.Current.Session[SESSION_SPROVINCIAS] = DVariables["SPROVINCIAS"];
+                HttpContext.Current.Session[SESSION_SDISTRITOS] = DVariables["SDISTRITOS"];
                 HttpContext.Current.Session.Timeout = 24 * 60;
             }
             catch (ArgumentOutOfRangeException kfe)
@@ -217,7 +235,10 @@ namespace FrontendUtil
                 HttpContext.Current.Session[SESSION_SUBIGEO] == null ||
                 HttpContext.Current.Session[SESSION_ITIPOUSUARIO] == null ||
                 HttpContext.Current.Session[SESSION_ITIPODOC] == null ||
-                HttpContext.Current.Session[SESSION_SNUMDOC] == null)
+                HttpContext.Current.Session[SESSION_SNUMDOC] == null ||
+                HttpContext.Current.Session[SESSION_SDEPARTAMENTOS] == null ||
+                HttpContext.Current.Session[SESSION_SPROVINCIAS] == null ||
+                HttpContext.Current.Session[SESSION_SDISTRITOS] == null)
                 {
                     return true;
                 }
@@ -258,6 +279,9 @@ namespace FrontendUtil
                 HttpContext.Current.Session[SESSION_ITIPOUSUARIO] = null;
                 HttpContext.Current.Session[SESSION_ITIPODOC] = null;
                 HttpContext.Current.Session[SESSION_SNUMDOC] = null;
+                HttpContext.Current.Session[SESSION_SDEPARTAMENTOS] = null;
+                HttpContext.Current.Session[SESSION_SPROVINCIAS] = null;
+                HttpContext.Current.Session[SESSION_SDISTRITOS] = null;
                 return true;
             }
             catch (Exception ex)

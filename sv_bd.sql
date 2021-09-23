@@ -3,8 +3,14 @@ Database: db_a66376_sv
 Red: mysql5042.site4now.net
 Username: a66376_sv
 Pass: @SisVot2021.
-*/
 
+accesos admin: 123
+tipos usuarios
+3: super admin
+2: admin
+1: usuario
+*/
+-- call sp_insertar_usuario('cuenta' ,'administrador' ,'administrador' ,1 ,0 ,0 ,0 ,0, ',','','' ,'000000' ,'' ,'' ,'2021-09-11' ,1 ,'2021-09-11' ,'17:45' ,3 ,'admin' ,'123' ,'' ,1 ,'88888888');
 /* se guarda caracteristicas generales tales como: genero, tipo de documento, etc */
 CREATE TABLE t_maestro (
   `idmaestro` INT NOT NULL AUTO_INCREMENT,
@@ -36,6 +42,9 @@ CREATE TABLE IF NOT EXISTS t_usuario(
   `idprovincia` INT DEFAULT NULL,
   `idciudad` INT DEFAULT NULL,
   `iddistrito` INT DEFAULT NULL,
+  `v_departamentos` VARCHAR(250) DEFAULT NULL,
+  `v_provincia` VARCHAR(1000) DEFAULT NULL,
+  `v_distritos` VARCHAR(2500) DEFAULT NULL,
   `v_ubigeo` VARCHAR(10) NULL,
   `v_nombres` VARCHAR(100) NOT NULL,
   `v_apellidos` VARCHAR(100) DEFAULT NULL,
@@ -93,16 +102,20 @@ CREATE TABLE t_votacion (
   `idvotacion` INT NOT NULL AUTO_INCREMENT,
   `idusuario` INT NOT NULL,
   `idpais` INT DEFAULT NULL,
-  `idregion` INT DEFAULT NULL,
-  `idprovincia` INT DEFAULT NULL,
-  `idciudad` INT DEFAULT NULL,
-  `iddistrito` INT DEFAULT NULL,
+  `idregion` VARCHAR(50) DEFAULT NULL,
+  `idprovincia` VARCHAR(250) DEFAULT NULL,
+  `idciudad` VARCHAR(1000) DEFAULT NULL,
+  `iddistrito` VARCHAR(2500) DEFAULT NULL,
   `v_ubigeo` VARCHAR(10) NULL,
   `v_nombre` VARCHAR(150) NULL,
   `v_descripcion` VARCHAR(500) NULL,
   `i_tipovotacion` INT NULL, -- si es nacional, distrital, regional, etc
   `i_tipotiempo` INT NULL, -- si es tiempo por dias , horas, minutos, etc
   `i_tiempo` INT NULL, -- la cantidad de tiempo
+  `dt_fecha_ini` DATE NULL,
+  `dt_hora_ini` VARCHAR(25) NULL,
+  `dt_fecha_fin` DATE NULL,
+  `dt_hora_fin` VARCHAR(25) NULL,
   `b_tiempo_fecha_hora` INT NULL, -- si es que hay tiempos con fecha y hora
   `dt_tiempo_fecha` VARCHAR(25) NULL, -- si es hasta una fecha determinada
   `dt_tiempo_hora` VARCHAR(25) NULL, -- si es hasta una hora determinada
@@ -174,7 +187,7 @@ CREATE TABLE t_votacion_usuario (
 -- obtiene info de la sesion usuario, logeo
 -- parametros: usuario y clave
 -- retorno: 0 es porque es error de logeo 1 es correcto
-/*DROP procedure IF EXISTS `sp_obtener_usuario`;*/
+DROP procedure IF EXISTS `sp_obtener_usuario`;
 DELIMITER $$
 CREATE PROCEDURE `sp_obtener_usuario`(IN _usuario VARCHAR(100),IN _clave VARCHAR(500) )
 BEGIN
@@ -188,12 +201,15 @@ BEGIN
         ,u.v_apellidos
         ,u.v_nombre_usuario
         ,u.i_genero
-        ,u.idpais,
-        ,u.idregion,
-        ,u.idprovincia,
-        ,u.idciudad,
-        ,u.iddistrito,
-        ,u.v_ubigeo,
+        ,u.idpais
+        ,u.idregion
+        ,u.idprovincia
+        ,u.idciudad
+        ,u.iddistrito
+        ,u.v_departamentos
+        ,u.v_provincia
+        ,u.v_distritos
+        ,u.v_ubigeo
         ,a.v_correo
         ,a.i_tipo_usuario
         ,u.i_tipo_documento
@@ -219,12 +235,15 @@ BEGIN
         ,0 as 'idprovincia'
         ,0 as 'idciudad'
         ,0 as 'iddistrito'
+        ,'' as 'v_departamentos'
+        ,'' as 'v_provincia'
+        ,'' as 'v_distritos'
         ,'' as 'v_ubigeo'
         ,'' as 'v_correo'
         ,0 as 'i_tipo_usuario'
-        ,'' as 'i_tipo_documento'
+        ,0 as 'i_tipo_documento'
         ,'' as 'v_documento'
-        ,0 as '_resultado'
+        ,0 as '_resultado';
     END;
     END IF;
 
@@ -247,6 +266,9 @@ CREATE PROCEDURE `sp_insertar_usuario`
   ,IN _idprovincia INT
   ,IN _idciudad INT
   ,IN _iddistrito INT
+  ,IN _v_departamentos VARCHAR(250)
+  ,IN _v_provincia VARCHAR(1000)
+  ,IN _v_distritos VARCHAR(2500)
   ,IN _v_ubigeo VARCHAR(10)
   ,IN _v_imagenperfil VARCHAR(250)
   ,IN _v_imagenportada VARCHAR(250)
@@ -277,6 +299,9 @@ BEGIN
       ,idprovincia
       ,idciudad
       ,iddistrito
+      ,v_departamentos
+      ,v_provincia
+      ,v_distritos
       ,v_ubigeo
       ,v_imagenperfil
       ,v_imagenportada
@@ -295,6 +320,9 @@ BEGIN
       ,_idprovincia
       ,_idciudad
       ,_iddistrito
+      ,_v_departamentos
+      ,_v_provincia
+      ,_v_distritos
       ,_v_ubigeo
       ,_v_imagenperfil
       ,_v_imagenportada
@@ -397,6 +425,9 @@ CREATE PROCEDURE `sp_actualizar_usuario`(
   ,IN _idprovincia INT
   ,IN _idciudad INT
   ,IN _iddistrito INT
+  ,IN _v_departamentos VARCHAR(250)
+  ,IN _v_provincia VARCHAR(1000)
+  ,IN _v_distritos VARCHAR(2500)
   ,IN _v_ubigeo VARCHAR(10)
   ,IN _v_nombres VARCHAR(100)
   ,IN _v_apellidos VARCHAR(100)
@@ -414,7 +445,7 @@ CREATE PROCEDURE `sp_actualizar_usuario`(
   ,IN _v_fechanacimiento VARCHAR(25)
   ,IN _v_fechamodificacion VARCHAR(25)
   ,IN _v_horamodificacion VARCHAR(25)
-  ,IN _idusuario_mod INT,
+  ,IN _idusuario_mod INT
   ,IN _b_estado BIT
   ,IN _i_tipo_documento INT
   ,IN _v_documento VARCHAR(25))
@@ -425,6 +456,9 @@ BEGIN
       idprovincia = _idprovincia,
       idciudad = _idciudad,
       iddistrito = _iddistrito,
+      v_departamentos = _v_departamentos,
+      v_provincia = _v_provincia,
+      v_distritos = _v_distritos,
       v_ubigeo = _v_ubigeo,
       v_nombres = _v_nombres,
       v_apellidos = _v_apellidos,
@@ -457,9 +491,10 @@ DELIMITER ;
 -- lista toda la info de un solo usuario
 -- parametros: id usuario
 -- retorno: listado de t_usuario
-/*DROP procedure IF EXISTS `sp_filtrar_usuario`;*/
+DROP procedure IF EXISTS `sp_filtrar_usuario`;
 DELIMITER $$
-CREATE PROCEDURE `sp_filtrar_usuario`(IN _idusuario INT, IN _bestado BIT(1))
+CREATE PROCEDURE `sp_filtrar_usuario`(IN _idusuario INT, IN _bestado BIT(1), 
+  IN _tipousuario INT)
 BEGIN
 
   SELECT 
@@ -468,6 +503,9 @@ BEGIN
     ,u.idprovincia
     ,u.idciudad
     ,u.iddistrito
+    ,u.v_departamentos
+    ,u.v_provincia
+    ,u.v_distritos
     ,u.v_ubigeo
     ,u.v_nombres
     ,u.v_apellidos
@@ -482,9 +520,13 @@ BEGIN
     ,u.v_imagenperfil
     ,u.v_imagenportada
     ,u.v_celular1
-    DATE_FORMAT(u.v_fechanacimiento, '%d-%m-%Y') as 'v_fechanacimiento'
+    ,DATE_FORMAT(u.v_fechanacimiento, '%d-%m-%Y') as 'v_fechanacimiento'
+    ,a.v_correo
   FROM t_usuario u
-    WHERE ((u.idusuario = _idusuario) OR (_idusuario = 0)) AND u.b_estado = _bestado;
+  LEFT JOIN t_acceso a ON u.idusuario = a.idusuario
+    WHERE ((u.idusuario = _idusuario) OR (_idusuario = 0)) 
+    AND u.b_estado = _bestado
+    AND ((a.i_tipo_usuario =_tipousuario) OR (_tipousuario = 0));
 
 END$$
 DELIMITER ;
@@ -525,10 +567,10 @@ CREATE PROCEDURE `sp_operacion_votacion`(
   ,IN _idvotacion INT
   ,IN _idusuario INT
   ,IN _idpais INT
-  ,IN _idregion INT
-  ,IN _idprovincia INT
-  ,IN _idciudad INT
-  ,IN _iddistrito INT
+  ,IN _idregion VARCHAR(50)
+  ,IN _idprovincia VARCHAR(250)
+  ,IN _idciudad VARCHAR(1000)
+  ,IN _iddistrito VARCHAR(2500)
   ,IN _v_ubigeo VARCHAR(10)
   ,IN _v_nombre VARCHAR(150)
   ,IN _v_descripcion VARCHAR(500)
@@ -568,7 +610,11 @@ CREATE PROCEDURE `sp_operacion_votacion`(
   ,IN _dt_fecharegistro VARCHAR(25)
   ,IN _v_horaregistro VARCHAR(25)
   ,IN _v_fechamodificacion VARCHAR(25)
-  ,IN _v_horamodificacion VARCHAR(25))
+  ,IN _v_horamodificacion VARCHAR(25)
+  ,IN _dt_fecha_ini VARCHAR(25)
+  ,IN _dt_hora_ini VARCHAR(25)
+  ,IN _dt_fecha_fin VARCHAR(25)
+  ,IN _dt_hora_fin VARCHAR(25))
 BEGIN
 
   IF (_tipoactualizar = 1) THEN
@@ -619,6 +665,10 @@ BEGIN
       ,b_estado = _b_estado
       ,v_fechamodificacion = STR_TO_DATE(_v_fechamodificacion, '%Y-%m-%d')
       ,v_horamodificacion = _v_horamodificacion
+      ,dt_fecha_ini = _dt_fecha_ini
+      ,dt_hora_ini = _dt_hora_ini
+      ,dt_fecha_fin = _dt_fecha_fin
+      ,dt_hora_fin = _dt_hora_fin
     WHERE idvotacion = _idvotacion;
 
   END;
@@ -670,7 +720,11 @@ BEGIN
       ,v_observacion
       ,b_estado
       ,dt_fecharegistro
-      ,v_horaregistro)
+      ,v_horaregistro
+      ,dt_fecha_ini
+      ,dt_hora_ini
+      ,dt_fecha_fin
+      ,dt_hora_fin)
     VALUES (
        _idusuario
       ,_idpais
@@ -715,7 +769,11 @@ BEGIN
       ,_v_observacion
       ,_b_estado
       ,STR_TO_DATE(_dt_fecharegistro, '%Y-%m-%d')
-      ,_v_horaregistro);
+      ,_v_horaregistro
+      ,_dt_fecha_ini
+      ,_dt_hora_ini
+      ,_dt_fecha_fin
+      ,_dt_hora_fin);
     
     END;
     END IF;
@@ -725,19 +783,24 @@ DELIMITER ;
 
 -- --------------------------------------------------------------------------
 
-/*DROP procedure IF EXISTS `sp_listar_votacion`;*/
+DROP procedure IF EXISTS `sp_listar_votacion`;
 DELIMITER $$
 CREATE PROCEDURE `sp_listar_votacion`(
    IN _idusuario INT
   ,IN _idvotacion INT
   ,IN _idpais INT
-  ,IN _idregion INT
-  ,IN _idprovincia INT
-  ,IN _idciudad INT
-  ,IN _iddistrito INT
-  ,IN _v_ubigeo VARCHAR(10))
+  ,IN _idregion VARCHAR(50)
+  ,IN _idprovincia VARCHAR(1000)
+  ,IN _idciudad VARCHAR(1000)
+  ,IN _iddistrito VARCHAR(2500)
+  ,IN _v_ubigeo VARCHAR(10)
+  ,IN _fechainicial VARCHAR(25)
+  ,IN _fechafinal VARCHAR(25)
+  ,IN _tipolistado INT)
 BEGIN
 
+  IF (_tipolistado = 1) THEN
+  
   SELECT 
      u.v_nombres
     ,u.v_apellidos
@@ -784,19 +847,239 @@ BEGIN
     ,v.i_pregunta_10
     ,v.v_pregunta_10
     ,v.v_observacion
-    ,v.b_estado
+    ,(SELECT COUNT(*) FROM t_votacion_usuario vu WHERE vu.idvotacion = v.idvotacion AND vu.idusuario = _idpais) as 'b_estado'
     ,DATE_FORMAT(v.dt_fecharegistro, '%d-%m-%Y') as 'dt_fecharegistro'
     ,v.v_horaregistro
-  FROM t_votacion v LEFT JOIN usuario u ON v.idusuario = u.idusuario
-    WHERE ((u.idusuario = _idusuario) OR (_idusuario = 0))
-     AND ((v.idpais) OR (_idpais = 0))
-     AND ((v.idregion) OR (_idregion = 0))
-     AND ((v.idprovincia) OR (_idprovincia = 0))
-     AND ((v.idciudad) OR (_idciudad = 0))
-     AND ((v.iddistrito) OR (_iddistrito = 0))
-     AND ((v.v_ubigeo) OR (_v_ubigeo = 'vacio'))
-     AND ((p.idvotacion = _idvotacion) OR (_idvotacion = 0))
-     AND v.b_estado = 1 ORDER BY v.idvotacion DESC;
+    ,DATE_FORMAT(v.dt_fecha_ini, '%d-%m-%Y') as 'dt_fecha_ini'
+    ,v.dt_hora_ini
+    ,DATE_FORMAT(v.dt_fecha_fin, '%d-%m-%Y') as 'dt_fecha_fin'
+    ,v.dt_hora_fin
+  FROM t_votacion v LEFT JOIN t_usuario u ON v.idusuario = u.idusuario
+    WHERE 
+     ((v.idusuario = _idusuario) OR (_idusuario = 0)) AND
+        (
+          (_fechainicial = 'vacio' AND _fechafinal = 'vacio')
+        OR
+          (
+            DATE_FORMAT(v.dt_fecha_ini,'%Y-%m-%d') <= STR_TO_DATE(_fechainicial,'%Y-%m-%d')
+          AND
+            DATE_FORMAT(v.dt_fecha_fin,'%Y-%m-%d') >= STR_TO_DATE(_fechafinal,'%Y-%m-%d')
+          )
+        )
+     AND ((_idregion = 'all') OR (v.idregion LIKE CONCAT('%', _idregion , '%')))
+     AND ((_idprovincia = 'all') OR (v.idprovincia LIKE CONCAT('%', _idprovincia , '%')))
+     AND ((_idciudad = 'all') OR (v.idciudad LIKE CONCAT('%', _idciudad , '%')))
+     AND ((_iddistrito = "all") OR (v.iddistrito LIKE CONCAT('%', _iddistrito , '%')))
+     AND ((v.idvotacion = _idvotacion) OR (_idvotacion = 0))
+     AND v.b_estado = 1 ORDER BY DATE_FORMAT(v.dt_fecha_fin, '%d-%m-%Y') DESC;
+
+  ELSEIF (_tipolistado = 2) THEN
+
+     SELECT 
+     u.v_nombres
+    ,u.v_apellidos
+    ,u.v_nombre_usuario
+    ,v.idvotacion
+    ,v.idusuario
+    ,v.idpais
+    ,v.idregion
+    ,v.idprovincia
+    ,v.idciudad
+    ,v.iddistrito
+    ,v.v_ubigeo
+    ,v.v_nombre
+    ,v.v_descripcion
+    ,v.i_tipovotacion
+    ,v.i_tipotiempo
+    ,v.i_tiempo
+    ,v.b_tiempo_fecha_hora
+    ,v.dt_tiempo_fecha
+    ,v.dt_tiempo_hora
+    ,v.b_respuesta
+    ,v.v_respuesta
+    ,v.i_varias_opciones
+    ,v.i_cantidad_opciones
+    ,v.i_votacion_cantidad
+    ,v.i_pregunta_1
+    ,v.v_pregunta_1
+    ,v.i_pregunta_2
+    ,v.v_pregunta_2
+    ,v.i_pregunta_3
+    ,v.v_pregunta_3
+    ,v.i_pregunta_4
+    ,v.v_pregunta_4
+    ,v.i_pregunta_5
+    ,v.v_pregunta_5
+    ,v.i_pregunta_6
+    ,v.v_pregunta_6
+    ,v.i_pregunta_7
+    ,v.v_pregunta_7
+    ,v.i_pregunta_8
+    ,v.v_pregunta_8
+    ,v.i_pregunta_9
+    ,v.v_pregunta_9
+    ,v.i_pregunta_10
+    ,v.v_pregunta_10
+    ,v.v_observacion
+    ,(SELECT COUNT(*) FROM t_votacion_usuario vu WHERE vu.idvotacion = v.idvotacion AND vu.idusuario = _idpais) as 'b_estado'
+    ,DATE_FORMAT(v.dt_fecharegistro, '%d-%m-%Y') as 'dt_fecharegistro'
+    ,v.v_horaregistro
+    ,DATE_FORMAT(v.dt_fecha_ini, '%d-%m-%Y') as 'dt_fecha_ini'
+    ,v.dt_hora_ini
+    ,DATE_FORMAT(v.dt_fecha_fin, '%d-%m-%Y') as 'dt_fecha_fin'
+    ,v.dt_hora_fin
+  FROM t_votacion v LEFT JOIN t_usuario u ON v.idusuario = u.idusuario
+    WHERE ((v.idusuario = _idusuario) OR (_idusuario = 0))
+     AND(
+          (_fechainicial = 'vacio' AND _fechafinal = 'vacio')
+        OR
+          (
+            DATE_FORMAT(v.dt_fecha_ini,'%Y-%m-%d') > STR_TO_DATE(_fechainicial,'%Y-%m-%d')
+          AND
+            DATE_FORMAT(v.dt_fecha_fin,'%Y-%m-%d') > STR_TO_DATE(_fechafinal,'%Y-%m-%d')
+          )
+        )
+     AND ((_idregion = 'all') OR (v.idregion LIKE CONCAT('%', _idregion , '%')))
+     AND ((_idprovincia = 'all') OR (v.idprovincia LIKE CONCAT('%', _idprovincia , '%')))
+     AND ((_idciudad = 'all') OR (v.idciudad LIKE CONCAT('%', _idciudad , '%')))
+     AND ((_iddistrito = "all") OR (v.iddistrito LIKE CONCAT('%', _iddistrito , '%')))
+     AND ((v.idvotacion = _idvotacion) OR (_idvotacion = 0))
+     AND v.b_estado = 1 ORDER BY DATE_FORMAT(v.dt_fecha_fin, '%d-%m-%Y') DESC;
+
+  ELSEIF (_tipolistado = 3) THEN
+
+     SELECT 
+     u.v_nombres
+    ,u.v_apellidos
+    ,u.v_nombre_usuario
+    ,v.idvotacion
+    ,v.idusuario
+    ,v.idpais
+    ,v.idregion
+    ,v.idprovincia
+    ,v.idciudad
+    ,v.iddistrito
+    ,v.v_ubigeo
+    ,v.v_nombre
+    ,v.v_descripcion
+    ,v.i_tipovotacion
+    ,v.i_tipotiempo
+    ,v.i_tiempo
+    ,v.b_tiempo_fecha_hora
+    ,v.dt_tiempo_fecha
+    ,v.dt_tiempo_hora
+    ,v.b_respuesta
+    ,v.v_respuesta
+    ,v.i_varias_opciones
+    ,v.i_cantidad_opciones
+    ,v.i_votacion_cantidad
+    ,v.i_pregunta_1
+    ,v.v_pregunta_1
+    ,v.i_pregunta_2
+    ,v.v_pregunta_2
+    ,v.i_pregunta_3
+    ,v.v_pregunta_3
+    ,v.i_pregunta_4
+    ,v.v_pregunta_4
+    ,v.i_pregunta_5
+    ,v.v_pregunta_5
+    ,v.i_pregunta_6
+    ,v.v_pregunta_6
+    ,v.i_pregunta_7
+    ,v.v_pregunta_7
+    ,v.i_pregunta_8
+    ,v.v_pregunta_8
+    ,v.i_pregunta_9
+    ,v.v_pregunta_9
+    ,v.i_pregunta_10
+    ,v.v_pregunta_10
+    ,v.v_observacion
+    ,(SELECT COUNT(*) FROM t_votacion_usuario vu WHERE vu.idvotacion = v.idvotacion AND vu.idusuario = _idpais) as 'b_estado'
+    ,DATE_FORMAT(v.dt_fecharegistro, '%d-%m-%Y') as 'dt_fecharegistro'
+    ,v.v_horaregistro
+    ,DATE_FORMAT(v.dt_fecha_ini, '%d-%m-%Y') as 'dt_fecha_ini'
+    ,v.dt_hora_ini
+    ,DATE_FORMAT(v.dt_fecha_fin, '%d-%m-%Y') as 'dt_fecha_fin'
+    ,v.dt_hora_fin
+  FROM t_votacion v LEFT JOIN t_usuario u ON v.idusuario = u.idusuario
+    WHERE ((v.idusuario = _idusuario) OR (_idusuario = 0))
+     AND(
+          (_fechainicial = 'vacio' AND _fechafinal = 'vacio')
+        OR
+          (
+            DATE_FORMAT(v.dt_fecha_ini,'%Y-%m-%d') < STR_TO_DATE(_fechainicial,'%Y-%m-%d')
+          AND
+            DATE_FORMAT(v.dt_fecha_fin,'%Y-%m-%d') < STR_TO_DATE(_fechafinal,'%Y-%m-%d')
+          )
+        )
+     AND ((_idregion = 'all') OR (v.idregion LIKE CONCAT('%', _idregion , '%')))
+     AND ((_idprovincia = 'all') OR (v.idprovincia LIKE CONCAT('%', _idprovincia , '%')))
+     AND ((_idciudad = 'all') OR (v.idciudad LIKE CONCAT('%', _idciudad , '%')))
+     AND ((_iddistrito = "all") OR (v.iddistrito LIKE CONCAT('%', _iddistrito , '%')))
+     AND ((v.idvotacion = _idvotacion) OR (_idvotacion = 0))
+     AND v.b_estado = 1 ORDER BY DATE_FORMAT(v.dt_fecha_fin, '%d-%m-%Y') DESC;
+
+ ELSEIF (_tipolistado = 4) THEN
+ 
+     SELECT 
+     u.v_nombres
+    ,u.v_apellidos
+    ,u.v_nombre_usuario
+    ,v.idvotacion
+    ,v.idusuario
+    ,v.idpais
+    ,v.idregion
+    ,v.idprovincia
+    ,v.idciudad
+    ,v.iddistrito
+    ,v.v_ubigeo
+    ,v.v_nombre
+    ,v.v_descripcion
+    ,v.i_tipovotacion
+    ,v.i_tipotiempo
+    ,v.i_tiempo
+    ,v.b_tiempo_fecha_hora
+    ,v.dt_tiempo_fecha
+    ,v.dt_tiempo_hora
+    ,v.b_respuesta
+    ,v.v_respuesta
+    ,v.i_varias_opciones
+    ,v.i_cantidad_opciones
+    ,v.i_votacion_cantidad
+    ,v.i_pregunta_1
+    ,v.v_pregunta_1
+    ,v.i_pregunta_2
+    ,v.v_pregunta_2
+    ,v.i_pregunta_3
+    ,v.v_pregunta_3
+    ,v.i_pregunta_4
+    ,v.v_pregunta_4
+    ,v.i_pregunta_5
+    ,v.v_pregunta_5
+    ,v.i_pregunta_6
+    ,v.v_pregunta_6
+    ,v.i_pregunta_7
+    ,v.v_pregunta_7
+    ,v.i_pregunta_8
+    ,v.v_pregunta_8
+    ,v.i_pregunta_9
+    ,v.v_pregunta_9
+    ,v.i_pregunta_10
+    ,v.v_pregunta_10
+    ,v.v_observacion
+    ,(SELECT COUNT(*) FROM t_votacion_usuario vu WHERE vu.idvotacion = v.idvotacion AND vu.idusuario = _idpais) as 'b_estado'
+    ,DATE_FORMAT(v.dt_fecharegistro, '%d-%m-%Y') as 'dt_fecharegistro'
+    ,v.v_horaregistro
+    ,DATE_FORMAT(v.dt_fecha_ini, '%d-%m-%Y') as 'dt_fecha_ini'
+    ,v.dt_hora_ini
+    ,DATE_FORMAT(v.dt_fecha_fin, '%d-%m-%Y') as 'dt_fecha_fin'
+    ,v.dt_hora_fin
+  FROM t_votacion v LEFT JOIN t_usuario u ON v.idusuario = u.idusuario
+    WHERE ((v.idusuario = _idusuario) OR (_idusuario = 0))
+     AND ((v.idvotacion = _idvotacion) OR (_idvotacion = 0))
+     AND v.b_estado = 1 ORDER BY DATE_FORMAT(v.dt_fecha_fin, '%d-%m-%Y') DESC;
+
+ END IF;
 
 END$$
 DELIMITER ;
@@ -848,7 +1131,7 @@ BEGIN
       ,i_pregunta_8 = _i_pregunta_8
       ,i_pregunta_9 = _i_pregunta_9
       ,i_pregunta_10 = _i_pregunta_10
-      ,v_observacion = _ v_observacion
+      ,v_observacion = _v_observacion
       ,b_estado = _b_estado
       ,v_fechamodificacion = STR_TO_DATE(_v_fechamodificacion, '%Y-%m-%d')
       ,v_horamodificacion = _v_horamodificacion
@@ -905,7 +1188,7 @@ DELIMITER ;
 
 -- --------------------------------------------------------------------------
 
-/*DROP procedure IF EXISTS `sp_listar_vot_usuario`;*/
+DROP procedure IF EXISTS `sp_listar_vot_usuario`;
 DELIMITER $$
 CREATE PROCEDURE `sp_listar_vot_usuario`(
    IN _idusuario INT, IN _idvotacionusuario INT)
@@ -934,10 +1217,10 @@ BEGIN
     ,v.b_estado
     ,DATE_FORMAT(v.dt_fecharegistro, '%d-%m-%Y') as 'dt_fecharegistro'
     ,v.v_horaregistro
-  FROM t_votacion_usuario v LEFT JOIN usuario u ON v.idusuario = u.idusuario
+  FROM t_votacion_usuario v LEFT JOIN t_usuario u ON v.idusuario = u.idusuario
     WHERE ((u.idusuario = _idusuario) OR (_idusuario = 0))
-     AND ((p.idvotacion_usuario = _idvotacionusuario) OR (_idvotacionusuario = 0))
-     AND v.b_estado = 1 ORDER BY v.idvotacion_usuario DESC;
+     AND ((v.idvotacion = _idvotacionusuario) OR (_idvotacionusuario = 0))
+     AND v.b_estado = 1 ORDER BY v.idvotacion DESC;
 
 END$$
 DELIMITER ;

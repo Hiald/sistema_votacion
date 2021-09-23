@@ -1,0 +1,307 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .form-labelv1 {
+        vertical-align: -webkit-baseline-middle;
+    }
+
+    #barraLateral {
+        height: 150vh;
+    }
+</style>
+
+<div class="row mt-3 mb-5">
+    <div class="h2">
+        Cuenta > Crear una cuenta administrativa
+    </div>
+</div>
+
+<div class="mt-4 mb-3">
+    <div class="row">
+        <div class="col-3">
+            <label class="form-labelv1">Nombres y apellidos</label>
+        </div>
+        <div class="col-6">
+            <input type="text" maxlength="50" class="form-control formulario-inicio" id="txnombres">
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">Permisos</label>
+        </div>
+        <div class="col-4 d-inline">
+            <div class="col-md-6 d-inline">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" checked name="chkpermiso" type="radio" id="chksi" value="1">
+                    <label class="form-check-label" for="chksi">Global</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" name="chkpermiso" type="radio" id="chkno" value="2">
+                    <label class="form-check-label" for="chkno">Específicos</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4" id="divDepartamento">
+        <div class="col-3">
+            <label class="form-labelv1">Departamento</label>
+        </div>
+        <div class="col-7">
+            <div class="col-md-12 d-inline" id="divResDepartamento"></div>
+        </div>
+    </div>
+    <div class="row mt-4" id="divProvincia">
+        <div class="col-3">
+            <label class="form-labelv1">Provincia</label>
+        </div>
+        <div class="col-7">
+            <div class="col-md-12 d-inline" id="divResProvincia"></div>
+        </div>
+    </div>
+    <div class="row mt-4" id="divDistrito">
+        <div class="col-3">
+            <label class="form-labelv1">Distrito</label>
+        </div>
+        <div class="col-7">
+            <div class="col-md-12 d-inline" id="divResDistrito"></div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">Usuario</label>
+        </div>
+        <div class="col-6">
+            <input type="email" maxlength="50" class="form-control formulario-inicio" id="txcorreo">
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">Clave</label>
+        </div>
+        <div class="col-6">
+            <input type="password" maxlength="20" class="form-control formulario-inicio" id="txclave">
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3">
+            <label class="form-labelv1">Repetir clave</label>
+        </div>
+        <div class="col-6">
+            <input type="password" maxlength="20" class="form-control formulario-inicio" id="txconfirmarclave">
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-3">
+
+        </div>
+        <div class="col-3 mb-5">
+            <button class="btn btn-inicio" id="btnNuevacuenta">Guardar</button>
+        </div>
+        <div class="col-4 mb-5">
+            <button class="btn btn-iniciov3" onclick="fnRegresar('inicio/principal');">Volver a inicio</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #4F1B7F;">
+                <h5 class="modal-title" id="staticBackdropLabel">
+                    <img class="imgcheck" src="~/Assets/img/icono_check.svg" />
+                </h5>
+            </div>
+            <div class="modal-body text-center justify-content-center">
+                <h3>¡Registro exitoso!</h3>
+                <h5>La cuenta ha sido creada</h5>
+            </div>
+            <div class="modal-footer text-center justify-content-center">
+                <button type="button" class="btn btn-inicio" onclick="fnRegresar('inicio/cuenta');">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Assets/js/Departamentos.js"></script>
+    <script>
+        $(document).ready(function () {
+            fnOcultarLoader();
+            fn_CargarDepartamento();
+        });
+
+        $('#divDepartamento').hide();
+        $('#divProvincia').hide();
+        $('#divDistrito').hide();
+        $('input[name="chkpermiso"]').change(function () {
+            if (this.value == '2') {
+                $('#divDepartamento').show();
+                $('#divProvincia').hide();
+                $('#divDistrito').hide();
+                fn_CargarDepartamento();
+            }
+            else {
+                $('#divDepartamento').hide();
+                $('#divProvincia').hide();
+                $('#divDistrito').hide();
+            }
+        });
+
+
+        function fn_CargarDepartamento() {
+            $('#divResDepartamento').html("");
+            lstDatos.departamentos.filter(function (el) {
+                $('#divResDepartamento').append('<div class="form-check form-check-inline">' +
+                    '<input class="form-check-input" name="chkDepartamentos" type="checkbox" id="chkdep' + el.contador_departamento + '" value="' + el.contador_departamento + '">' +
+                    '<label class="form-check-label" for="chkdep' + el.contador_departamento + '">' + el.nombre + '</label>' +
+                    '</div>');
+
+            });
+            fn_ActivarProvincias();
+        }
+
+        function fn_ActivarProvincias() {
+            $('input[name="chkDepartamentos"]').unbind().change(function () {
+                $('#divProvincia').show();
+                $('#divResProvincia').html("");
+                $('#divResDistrito').html("");
+                $("input:checkbox[name='chkDepartamentos']:checked").each(function () {
+                    var iddepartamento = $(this).val();
+                    lstDatos.provincia.filter(function (el) {
+                        if (iddepartamento == el.contador_departamento) {
+                            $('#divResProvincia').append('<div class="form-check form-check-inline">' +
+                                '<input class="form-check-input" name="chkProvincia" type="checkbox" id="chkprov' + el.contador_provincia + '" value="' + el.contador_provincia + '">' +
+                                '<label class="form-check-label" for="chkprov' + el.contador_provincia + '">' + el.nombre + '</label>' +
+                                '</div>');
+                        }
+                    });
+                });
+                fn_ActivarDistritos();
+            });
+
+        }
+
+        function fn_ActivarDistritos() {
+            $('input[name="chkProvincia"]').unbind().change(function () {
+                $('#divDistrito').show();
+                $('#divResDistrito').html("");
+                $("input:checkbox[name='chkProvincia']:checked").each(function () {
+                    var idprovincia = $(this).val();
+                    lstDatos.distrito.filter(function (el) {
+                        if (idprovincia == el.contador_provincia) {
+                            $('#divResDistrito').append('<div class="form-check form-check-inline">' +
+                                '<input class="form-check-input" name="chkDistrito" type="checkbox" id="chkdist' + el.contador_distrito + '" value="' + el.contador_distrito + '">' +
+                                '<label class="form-check-label" for="chkdist' + el.contador_distrito + '">' + el.nombre + '</label>' +
+                                '</div>');
+                        }
+                    });
+                });
+                
+            });
+        }
+
+
+       
+        var slstDepartamentos = [];
+        var slstProvincias = [];
+        var slstDistritos = [];
+        $('#btnNuevacuenta').click(function () {
+            fnMostrarLoader();
+            var snombre = $('#txnombres').val();
+            var scorreo = $('#txcorreo').val();
+            var sclave = $('#txclave').val();
+            var sconfirmarclave = $('#txconfirmarclave').val();
+            var sfecharegistro = moment().format("YYYY-MM-DD");
+            var shora = moment().format("hh:mm:ss");
+            var ivalorTipoPermiso = $("input:radio[name='chkpermiso']:checked").val();
+
+            if (snombre == "" || scorreo == "" || sclave == "" || sconfirmarclave == "") {
+                fnOcultarLoader();
+                alert("Falta ingresar datos.");
+                return;
+            }
+            if (sclave != sconfirmarclave) {
+                fnOcultarLoader();
+                alert("Las claves no coinciden.");
+                return;
+            }
+           
+
+            var idprovincia = 999;
+            var idciudad = 999;
+            var iddistrito = 999;
+            if (ivalorTipoPermiso == '2') {
+                $("input:checkbox[name='chkDepartamentos']:checked").each(function () {
+                    slstDepartamentos.push($(this).val());
+                });
+                $("input:checkbox[name='chkProvincia']:checked").each(function () {
+                    slstProvincias.push($(this).val());
+                });
+                $("input:checkbox[name='chkDistrito']:checked").each(function () {
+                    slstDistritos.push($(this).val());
+                });
+            } else {
+                idprovincia = 0;
+                idciudad = 0;
+                iddistrito = 0;
+                slstDepartamentos = "";
+                slstProvincias = "";
+                slstDistritos = "";
+            }
+
+            $.ajax({
+                type: "POST",
+                url: RutaPrincipal + 'Inicio/CrearUsuario',
+                data: {
+                    "nombres": snombre,
+                    "apellidos": "",
+                    "igenero": 1,
+                    "idregion": 1,
+                    "idprovincia": idprovincia,
+                    "idciudad": idciudad,
+                    "iddistrito": iddistrito,
+                    "ubigeo": "000000",
+                    "simagenperfil": "",
+                    "simagenportada": "",
+                    "fecnac": "",
+                    "bestado": 1,
+                    "fecharegistro": sfecharegistro,
+                    "horaregistro": shora,
+                    "tipousuario": 2,
+                    "correo": scorreo,
+                    "itipodoc": 0,
+                    "numdoc": "",
+                    "clave": sclave,
+                    "token": "",
+                    "sdepartamentos": slstDepartamentos.toString(),
+                    "sprovincias": slstProvincias.toString(),
+                    "sdistritos": slstDistritos.toString()
+                },
+                async: false,
+                success: function (msg) {
+                    if (msg.iResultado == -3) {
+                        //fnOcultarLoader();
+                        alert("Ha ocurrido un error, inténtelo nuevamente");
+                        return;
+                    } else {
+                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'), { backdrop: 'static' })
+                        modal.show();
+                    }
+                },
+                error: function (msg) {
+                    fnOcultarLoader();
+                },
+                complete: function (data) {
+                    // si acabo de completar
+                }
+            });
+        });
+
+    </script>
+}

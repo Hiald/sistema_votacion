@@ -10,14 +10,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regístrate</title>
     <link href="~/Assets/Lib/bootstrap5/bootstrap.css" rel="stylesheet" />
-    <style>
-    </style>
+    <link href="~/Assets/css/Layout.css" rel="stylesheet" />
+    <script>
+         var RutaPrincipal = "@Url.Content("~")";
+    </script>
 </head>
 <body>
-
     <div class="d-lg-flex half">
         <div class="bg order-1 order-md-2 bgimagen"></div>
-        <div class="contents order-2 order-md-1 mt-3">
+        <div class="contents order-2 order-md-1 mt-5">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
                     <div class="col-md-7">
@@ -36,93 +37,68 @@
                             <h3 class="titulo">Crear cuenta</h3>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <label for="txnombres" class="form-label font-15">Nombres</label>
-                                    <input type="text" class="form-control formulario-inicio" id="txnombres">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <label for="txapellidos" class="form-label font-15">Apellidos</label>
-                                    <input type="text" class="form-control formulario-inicio" id="txapellidos">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <label for="slcdoc" class="form-label font-15">Documento de identidad</label>
-                                    <select class="form-select form-select-sm formulario-inicio" id="slcdoc">
-                                        <option selected>Seleccione</option>
-                                        <option value="1">DNI</option>
-                                        <option value="2">Carnet de extranjería</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group" style="margin-top: 7px;">
-                                    <label class="font-15" for="txnumerodoc">&nbsp;</label>
-                                    <input type="text" class="form-control formulario-inicio" id="txnumerodoc">
-                                </div>
-                            </div>
                             <div class="col-md-12">
                                 <div class="form-group mb-2">
-                                    <label for="txcorreo" class="font-15">Correo electrónico</label>
-                                    <input type="email" class="form-control formulario-inicio" id="txcorreo">
+                                    <label for="txnombres" class="form-label font-15">Nombres y Apellidos</label>
+                                    <input type="text" maxlength="50" class="form-control formulario-inicio" id="txnombres">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <label for="txclave" class="font-15">Contraseña</label>
-                                    <input type="password" class="form-control formulario-inicio" id="txclave">
+                                    <label for="slcdoc" class="form-label font-15">N° de identidad (DNI, etc.)</label>
+                                    <input type="text" maxlength="15" class="form-control formulario-inicio" id="slcdoc">
+
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <label for="txconfirmarclave" class="font-15">Confirmar contraseña</label>
-                                    <input type="password" class="form-control formulario-inicio" id="txconfirmarclave">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <label for="slcdepartamento" class="font-15">Departamento</label>
-                                    <select class="form-select form-select-sm formulario-inicio" id="slcdepartamento">
-                                        <option selected>Seleccione</option>
-                                        <option value="1">DNI</option>
-                                        <option value="2">Carnet de extranjería</option>
-                                    </select>
+                                    <label for="slcdepartamento" class="form-label font-15">Departamento</label>
+                                    <select class="form-select form-select-sm formulario-inicio" id="slcdepartamento"></select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
                                     <label for="slcprovincia" class="font-15">Provincia</label>
-                                    <select class="form-select form-select-sm formulario-inicio" id="slcprovincia">
-                                        <option selected>Seleccione</option>
-                                        <option value="1">DNI</option>
-                                        <option value="2">Carnet de extranjería</option>
-                                    </select>
+                                    <select class="form-select form-select-sm formulario-inicio" id="slcprovincia"></select>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
                                     <label for="slcdistrito" class="font-15">Distrito</label>
-                                    <select class="form-select form-select-sm formulario-inicio" id="slcdistrito">
-                                        <option selected>Seleccione</option>
-                                        <option value="1">DNI</option>
-                                        <option value="2">Carnet de extranjería</option>
-                                    </select>
+                                    <select class="form-select form-select-sm formulario-inicio" id="slcdistrito"></select>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label for="txcorreo" class="font-15">Correo electrónico</label>
+                                    <input type="email" maxlength="50" class="form-control formulario-inicio" id="txcorreo">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="txclave" class="font-15">Contraseña</label>
+                                    <input type="password" maxlength="20" class="form-control formulario-inicio" id="txclave">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <label for="txconfirmarclave" class="font-15">Confirmar contraseña</label>
+                                    <input type="password" maxlength="20" class="form-control formulario-inicio" id="txconfirmarclave">
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
                 <div class="row align-items-start justify-content-start mt-1">
                     <div class="col-md-11 text-center" style="margin-left: 8px;">
-                        <input type="checkbox" value="" />&nbsp;Estoy de acuerdo con los términos de uso
+                        <input id="chkterminos" type="checkbox" value="" />&nbsp;<label class="font-16">Estoy de acuerdo con los términos de uso</label>
                     </div>
                 </div>
                 <div class="row align-items-center justify-content-center mt-1">
                     <div class="col-md-5 text-center">
-                        <input value="Confirmar datos" class="btn btn-inicio">
+                        <button id="btnregistrar" class="btn btn-inicio">Confirmar datos</button>
                     </div>
                 </div>
                 <div class="row align-items-center justify-content-center mt-3">
@@ -134,6 +110,201 @@
         </div>
     </div>
 
+    <div id="fnCarga">
+        <div class="divLoader" id="divcarga">
+            <div class="loader">
+                <svg viewBox="0 0 80 80">
+                    <circle id="test" cx="40" cy="40" r="32"></circle>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Registro Exitoso-->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #4F1B7F;">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        <img class="imgcheck" src="~/Assets/img/icono_check.svg" />
+                    </h5>
+                </div>
+                <div class="modal-body text-center justify-content-center">
+                    <h3>¡Registro exitoso!</h3>
+                    <h5>Tu cuenta ha sido creada <br /> Inicia sesión nuevamente.</h5>
+                </div>
+                <div class="modal-footer text-center justify-content-center">
+                    <button type="button" class="btn btn-inicio" id="btnaceptar">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="~/Assets/Lib/bootstrap5/bootstrap.bundle.js"></script>
+    <script src="~/Assets/Lib/momentjs/moment.js"></script>
+    <script src="~/Assets/Lib/jquery/jquery.js"></script>
+    <script src="~/Assets/js/Departamentos.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            fnOcultarLoader();
+            fn_CargarDepartamento();
+        });
+
+        function fnMostrarLoader() {
+            $('#fnCarga').css("display", "block");
+        }
+
+        function fnOcultarLoader() {
+            $('#fnCarga').css("display", "none");
+        }
+
+        function validarNumero(numero) {
+            var regex = /^-?\d*$/;
+            return regex.test(numero);
+        }
+
+        var dt_fechanac = moment().format("YYYY-MM-DD");
+        $('#btnaceptar').click(function () {
+            window.location.href = RutaPrincipal + "Inicio/inicio";
+        });
+
+        function fn_CargarDepartamento() {
+            $('#slcdepartamento').find('option').remove();
+            $('#slcdepartamento').append($("<option></option>")
+                .attr("value", 0)
+                .text("Seleccione"));
+
+            lstDatos.departamentos.filter(function (el) {
+                $('#slcdepartamento').append($("<option></option>")
+                    .attr("value", el.contador_departamento)
+                    .attr("data-idubigeo", el.id_departamento)
+                    .text(el.nombre));
+
+            });
+
+
+        }
+
+        $('#slcdepartamento').on('change', function () {
+            $('#slcprovincia').find('option').remove();
+            $('#slcprovincia').append($("<option></option>")
+                .attr("value", 0)
+                .text("Seleccione"));
+            var iddepartamento = $('#slcdepartamento option:selected').val();
+            lstDatos.provincia.filter(function (el) {
+                if (iddepartamento == el.contador_departamento) {
+                    $('#slcprovincia').append($("<option></option>")
+                        .attr("value", el.contador_provincia)
+                        .text(el.nombre));
+                }
+            });
+
+        });
+
+        $('#slcprovincia').on('change', function () {
+            $('#slcdistrito').find('option').remove();
+            $('#slcdistrito').append($("<option></option>")
+                .attr("value", 0)
+                .text("Seleccione"));
+            var idprovincia = $('#slcprovincia option:selected').val();
+            lstDatos.distrito.filter(function (el) {
+                //console.log(el);
+                if (idprovincia == el.contador_provincia) {
+                    $('#slcdistrito').append($("<option></option>")
+                        .attr("value", el.contador_distrito)
+                        .attr("data-idubigeo", el.subigeo)
+                        .text(el.nombre));
+                }
+            });
+
+        });
+
+        $('#btnregistrar').click(function () {
+            var snombre = $('#txnombres').val();
+            var sdni = $('#slcdoc').val();
+            var slcdepartamento = $('#slcdepartamento option:selected').val();
+            var slcprovincia = $('#slcprovincia option:selected').val();
+            var slcdistrito = $('#slcdistrito option:selected').val();
+            var scorreo = $('#txcorreo').val();
+            var sclave = $('#txclave').val();
+            var sconfirmarclave = $('#txconfirmarclave').val();
+            var sfecharegistro = moment().format("YYYY-MM-DD");
+            var shora = moment().format("hh:mm:ss");
+
+            if (snombre == "" || sdni == "" || scorreo == "" || sclave == "" || sconfirmarclave == "") {
+                fnOcultarLoader();
+                alert("Falta ingresar datos.");
+                return;
+            }
+
+            if (sclave != sconfirmarclave) {
+                fnOcultarLoader();
+                alert("Las claves no coinciden.");
+                return;
+            }
+
+            if (slcdepartamento == "" || slcdepartamento == "0" || slcprovincia == "" || slcprovincia == "0" || slcdistrito == "" || slcdistrito == "0") {
+                fnOcultarLoader();
+                alert("Selecciona la ubicación del partido.");
+                return;
+            }
+
+            if (!$('#chkterminos').prop("checked")) {
+                fnOcultarLoader();
+                alert("Aceptar los términos de uso.");
+                return;
+            }
+            var subigeo = $('#slcdepartamento option:selected').attr("data-idubigeo") + $('#slcdistrito option:selected').attr("data-idubigeo");
+            fnMostrarLoader();
+            $.ajax({
+                type: "POST",
+                url: RutaPrincipal + 'Inicio/CrearUsuario',
+                data: {
+                    "nombres": snombre,
+                    "apellidos": "",
+                    "igenero": 1,
+                    "idregion": 1,
+                    "idprovincia": 0,
+                    "idciudad": 0,
+                    "iddistrito": 0,
+                    "ubigeo": subigeo,
+                    "simagenperfil": "",
+                    "simagenportada": "",
+                    "fecnac": "",
+                    "bestado": 1,
+                    "fecharegistro": sfecharegistro,
+                    "horaregistro": shora,
+                    "tipousuario": 1,
+                    "correo": scorreo,
+                    "itipodoc": 1,
+                    "numdoc": sdni,
+                    "clave": sclave,
+                    "token": "",
+                    "sdepartamentos": slcdepartamento,
+                    "sprovincias": slcprovincia,
+                    "sdistritos": slcdistrito
+                },
+                async: true,
+                success: function (msg) {
+                    if (msg.iResultado == -3) {
+                        fnOcultarLoader();
+                        alert("USUARIO O CLAVE INCORRECTO");
+                        return;
+                    } else {
+                        var modal = new bootstrap.Modal(document.getElementById('staticBackdrop'), { backdrop: 'static' })
+                        modal.show();
+                    }
+                },
+                error: function (msg) {
+                    fnOcultarLoader();
+                },
+                complete: function (data) {
+                    // si acabo de completar
+                }
+            });
+
+        });
+    </script>
 </body>
 </html>
