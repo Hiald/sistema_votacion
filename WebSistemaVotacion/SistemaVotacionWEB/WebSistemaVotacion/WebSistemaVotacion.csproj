@@ -190,6 +190,7 @@
     <Content Include="Views\inicio\nuevaCuenta.cshtml" />
     <Content Include="Views\votacion\mocionUsuario.cshtml" />
     <Content Include="Views\inicio\perfil.cshtml" />
+    <None Include="Properties\PublishProfiles\jurado_smarterasp.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FrontendUtil\FrontendUtil.csproj">

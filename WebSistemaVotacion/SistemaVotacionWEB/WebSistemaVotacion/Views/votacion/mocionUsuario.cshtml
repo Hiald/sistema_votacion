@@ -1,5 +1,7 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+                /**/
+
+                Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
@@ -36,19 +38,18 @@
                     <div class="col-4" id="div1"></div>
                     <div class="col-4" id="div2"></div>
                     <div class="col-4" id="div3"></div>
-                    <div class="col-4" id="div4"></div>
-                    <div class="col-4" id="div5"></div>
-                    <div class="col-4" id="div6"></div>
-                    <div class="col-4" id="div7"></div>
-                    <div class="col-4" id="div8"></div>
-                    <div class="col-4" id="div9"></div>
-                    <div class="col-4" id="div10"></div>
+                    <div class="col-4 mt-3" id="div4"></div>
+                    <div class="col-4 mt-3" id="div5"></div>
+                    <div class="col-4 mt-3" id="div6"></div>
+                    <div class="col-4 mt-3" id="div7"></div>
+                    <div class="col-4 mt-3" id="div8"></div>
+                    <div class="col-4 mt-3" id="div9"></div>
+                    <div class="col-4 mt-3" id="div10"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -124,7 +125,26 @@
         <div class="col-md-6">
             <canvas id="bar-chart" width="400" height="300"></canvas>
         </div>
+        <div class="col-md-5">
+            <canvas id="pie-chart" width="400" height="300"></canvas>
+        </div>
     </div>
+
+    <div class="row mt-3">
+        <h3>Observaciones</h3>
+        <div class="col-md-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Observación</th>
+                    </tr>
+                </thead>
+                <tbody id="bodytabla"></tbody>
+            </table>
+        </div>
+    </div>
+
 }
 
 @section Scripts{
@@ -132,31 +152,167 @@
     {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>
         <script>
-            new Chart(document.getElementById("bar-chart"), {
-                type: 'bar',
-                data: {
-                    labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-                    datasets: [
-                        {
-                            label: "Population (millions)",
-                            backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-                            data: [2478, 5267, 734, 784, 433]
+
+            function fnListarDatos() {
+                var VLidVotacion = $('#hddIdvotacion').val();
+                $.ajax({
+                    type: "POST",
+                    url: RutaPrincipal + 'votacion/wListarVotacionUsuario',
+                    data: {
+                        "widusuario": 0,
+                        "widvotacionusuario": VLidVotacion
+                    },
+                    async: true,
+                    success: function (res) {
+                        console.log("lista feedback usuario");
+                        console.log(res);
+
+                        $.each(res.aaData, function (index, value) {
+                            $("#bodytabla").append('<tr>' +
+                                '<td>' + value.snombres + '</td>' +
+                                '<td>' + value.sobservacion + '</td>' +
+                                '</tr>');
+                        });
+
+
+
+                        if (!res.aaData == "") {
+                            if (VGCantidadPreguntas != 0) {
+                                var arrRes = [];
+                                for (var i = 1; i <= VGCantidadPreguntas; i++) {
+
+                                    if (i == VGCantidadPreguntas) {
+                                        arrRes.push("Pregunta" + i);
+                                    } else {
+                                        arrRes.push("Pregunta" + i + ",");
+                                    }
+                                }
+                                var iresPregunt1 = 0;
+                                var iresPregunt2 = 0;
+                                var iresPregunt3 = 0;
+                                var iresPregunt4 = 0;
+                                var iresPregunt5 = 0;
+                                var iresPregunt6 = 0;
+                                var iresPregunt7 = 0;
+                                var iresPregunt8 = 0;
+                                var iresPregunt9 = 0;
+                                var iresPregunt10 = 0;
+                                var arrCantidadPreguntas = [];
+                                var arrColores = [];
+                                $.each(res.aaData, function (index, v) {
+                                    if (v.ipregunta_1 == 1) {
+                                        iresPregunt1++;
+                                    }
+                                    if (v.ipregunta_2 == 1) {
+                                        iresPregunt2++;
+                                    }
+                                    if (v.ipregunta_3 == 1) {
+                                        iresPregunt3++;
+                                    }
+                                    if (v.ipregunta_4 == 1) {
+                                        iresPregunt4++;
+                                    }
+                                    if (v.ipregunta_5 == 1) {
+                                        iresPregunt5++;
+                                    }
+                                    if (v.ipregunta_6 == 1) {
+                                        iresPregunt6++;
+                                    }
+                                    if (v.ipregunta_7 == 1) {
+                                        iresPregunt7++;
+                                    }
+                                    if (v.ipregunta_8 == 1) {
+                                        iresPregunt8++;
+                                    }
+                                    if (v.ipregunta_9 == 1) {
+                                        iresPregunt9++;
+                                    }
+                                    if (v.ipregunta_10 == 1) {
+                                        iresPregunt10++;
+                                    }
+                                });
+
+                                arrCantidadPreguntas.push(iresPregunt1);
+                                arrCantidadPreguntas.push(iresPregunt2);
+                                arrCantidadPreguntas.push(iresPregunt3);
+                                arrCantidadPreguntas.push(iresPregunt4);
+                                arrCantidadPreguntas.push(iresPregunt5);
+                                arrCantidadPreguntas.push(iresPregunt6);
+                                arrCantidadPreguntas.push(iresPregunt7);
+                                arrCantidadPreguntas.push(iresPregunt8);
+                                arrCantidadPreguntas.push(iresPregunt9);
+                                arrCantidadPreguntas.push(iresPregunt10);
+
+                            }
+                        } else {
+
                         }
-                    ]
-                },
-                options: {
-                    legend: { display: false },
-                    title: {
-                        display: true,
-                        text: 'Predicted world population (millions) in 2050'
+
+                        //grafico barra
+                        new Chart(document.getElementById("bar-chart"), {
+                            type: 'bar',
+                            data: {
+                                labels: arrSStringPreguntas,
+                                datasets: [
+                                    {
+                                        label: "Cantidad (Votaciones)",
+                                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                                        data: arrCantidadPreguntas
+                                    }
+                                ]
+                            },
+                            options: {
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Cantidad de votaciones'
+                                    }
+                                }
+                            }
+                        });
+
+
+                        //grafico donut
+                        new Chart(document.getElementById("pie-chart"), {
+                            type: 'pie',
+                            data: {
+                                labels: arrSStringPreguntas,
+                                datasets: [{
+                                    label: "Cantidad (Votaciones)",
+                                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850", "#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                                    data: arrCantidadPreguntas
+                                }]
+                            },
+                            options: {
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Cantidad de votaciones'
+                                    }
+                                }
+                            }
+                        });
+
+                        fnOcultarLoader();
+                    },
+                    error: function (msg) {
+                        fnOcultarLoader();
+                    },
+                    complete: function (data) {
+                        // si acabo de completar
                     }
-                }
-            });
+                });
+
+
+            }
+
         </script>
     }
     <script>
+        var arrSStringPreguntas = [];
         var iIDvot = 0;
         var itipovot = 0;
+        var VGCantidadPreguntas = 0;
         function fn_ListarMocion(idvotacion, itipovotacion) {
             fnMostrarLoader();
             // 1 : es nuevo, no ha hecho la votacion aun  = 1
@@ -182,47 +338,61 @@
                     },
                     async: true,
                     success: function (res) {
-                        //console.log(res);
+                        console.log("lista votacion");
+                        console.log(res);
 
                         if (!res.aaData == "") {
                             $('#hddIdvotacion').val(res.aaData[0].idvotacion);
                             $('#txtitulo').text('Mociones > ' + res.aaData[0].snombre);
                             $('#txDescripcion').text(res.aaData[0].sdescripcion);
-
+                            VGCantidadPreguntas = res.aaData[0].icantidad_opciones;
                             if (res.aaData[0].ipregunta_1 == 1) {
                                 $('#div1').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_1 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_1);
                             }
                             if (res.aaData[0].ipregunta_2 == 1) {
                                 $('#div2').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_2 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_2);
                             }
                             if (res.aaData[0].ipregunta_3 == 1) {
                                 $('#div3').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_3 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_3);
                             }
                             if (res.aaData[0].ipregunta_4 == 1) {
                                 $('#div4').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_4 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_4);
                             }
                             if (res.aaData[0].ipregunta_5 == 1) {
                                 $('#div5').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_5 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_5);
                             }
                             if (res.aaData[0].ipregunta_6 == 1) {
                                 $('#div6').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_6 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_6);
                             }
                             if (res.aaData[0].ipregunta_7 == 1) {
                                 $('#div7').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_7 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_7);
                             }
                             if (res.aaData[0].ipregunta_8 == 1) {
                                 $('#div8').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_8 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_8);
                             }
                             if (res.aaData[0].ipregunta_9 == 1) {
                                 $('#div9').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_9 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_9);
                             }
                             if (res.aaData[0].ipregunta_10 == 1) {
                                 $('#div10').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_10 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_10);
                             }
 
                         } else {
                             //$('#bodyMociones').append('<div class="text-center"><label class="text-center">No hay datos.</label></div>');
 
+                        }
+                        if ($('#hddTipoUsuario').val() == '2' || $('#hddTipoUsuario').val() == '3') {
+                            fnListarDatos();
                         }
 
                         fnOcultarLoader();
@@ -257,39 +427,50 @@
                         //console.log(res);
 
                         if (!res.aaData == "") {
+                            VGCantidadPreguntas = res.aaData[0].icantidad_opciones;
                             $('#hddIdvotacion').val(res.aaData[0].idvotacion);
                             $('#txtitulo').text('Mociones > ' + res.aaData[0].snombre);
                             $('#txDescripcion').text(res.aaData[0].sdescripcion);
 
                             if (res.aaData[0].ipregunta_1 == 1) {
                                 $('#div1').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="1">' + res.aaData[0].spregunta_1 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_1);
                             }
                             if (res.aaData[0].ipregunta_2 == 1) {
                                 $('#div2').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="2">' + res.aaData[0].spregunta_2 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_2);
                             }
                             if (res.aaData[0].ipregunta_3 == 1) {
                                 $('#div3').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="3">' + res.aaData[0].spregunta_3 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_3);
                             }
                             if (res.aaData[0].ipregunta_4 == 1) {
                                 $('#div4').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="4">' + res.aaData[0].spregunta_4 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_4);
                             }
                             if (res.aaData[0].ipregunta_5 == 1) {
                                 $('#div5').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="5">' + res.aaData[0].spregunta_5 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_5);
                             }
                             if (res.aaData[0].ipregunta_6 == 1) {
                                 $('#div6').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="6">' + res.aaData[0].spregunta_6 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_6);
                             }
                             if (res.aaData[0].ipregunta_7 == 1) {
                                 $('#div7').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="7">' + res.aaData[0].spregunta_7 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_7);
                             }
                             if (res.aaData[0].ipregunta_8 == 1) {
                                 $('#div8').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="8">' + res.aaData[0].spregunta_8 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_8);
                             }
                             if (res.aaData[0].ipregunta_9 == 1) {
                                 $('#div9').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="9">' + res.aaData[0].spregunta_9 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_9);
                             }
                             if (res.aaData[0].ipregunta_10 == 1) {
                                 $('#div10').html('<button class="btn btn-iniciov3 btnElegir" data-ivalor="10">' + res.aaData[0].spregunta_10 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_10);
                             }
 
                         } else {
@@ -329,39 +510,50 @@
                         //console.log(res);
 
                         if (!res.aaData == "") {
+                            VGCantidadPreguntas = res.aaData[0].icantidad_opciones;
                             $('#hddIdvotacion').val(res.aaData[0].idvotacion);
                             $('#txtitulo').text('Mociones > ' + res.aaData[0].snombre);
                             $('#txDescripcion').text(res.aaData[0].sdescripcion);
 
                             if (res.aaData[0].ipregunta_1 == 1) {
                                 $('#div1').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_1 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_1);
                             }
                             if (res.aaData[0].ipregunta_2 == 1) {
                                 $('#div2').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_2 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_2);
                             }
                             if (res.aaData[0].ipregunta_3 == 1) {
                                 $('#div3').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_3 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_3);
                             }
                             if (res.aaData[0].ipregunta_4 == 1) {
                                 $('#div4').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_4 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_4);
                             }
                             if (res.aaData[0].ipregunta_5 == 1) {
                                 $('#div5').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_5 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_5);
                             }
                             if (res.aaData[0].ipregunta_6 == 1) {
                                 $('#div6').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_6 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_6);
                             }
                             if (res.aaData[0].ipregunta_7 == 1) {
                                 $('#div7').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_7 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_7);
                             }
                             if (res.aaData[0].ipregunta_8 == 1) {
                                 $('#div8').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_8 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_8);
                             }
                             if (res.aaData[0].ipregunta_9 == 1) {
                                 $('#div9').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_9 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_9);
                             }
                             if (res.aaData[0].ipregunta_10 == 1) {
                                 $('#div10').html('<button class="btn btn-iniciov3" disabled>' + res.aaData[0].spregunta_10 + '</button>');
+                                arrSStringPreguntas.push(res.aaData[0].spregunta_10);
                             }
 
                         } else {
@@ -380,7 +572,6 @@
                     }
                 });
             }
-
         }
 
         $(document).ready(function () {
@@ -482,39 +673,6 @@
             });
         }
 
-        $('#btnVerDatos').click(function () {
-            var VLidVotacion = $('#hddIdvotacion').val();
-            $.ajax({
-                type: "POST",
-                url: RutaPrincipal + 'votacion/wListarVotacionUsuario',
-                data: {
-                    "widusuario": 0,
-                    "widvotacionusuario": VLidVotacion
-                },
-                async: true,
-                success: function (res) {
-                    console.log("lista feedback usuario");
-                    console.log(res);
-
-                    if (!res.aaData == "") {
-                        $.each(res.aaData, function (index, value) {
-
-                        });
-                    } else {
-                        //$('#bodyMociones').append('<div class="text-center"><label class="text-center">No hay datos.</label></div>');
-
-                    }
-
-                    fnOcultarLoader();
-                    fn_ActivarElegir();
-                },
-                error: function (msg) {
-                    fnOcultarLoader();
-                },
-                complete: function (data) {
-                    // si acabo de completar
-                }
-            });
-        });
     </script>
+
 }

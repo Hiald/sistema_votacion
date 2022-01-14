@@ -60,7 +60,7 @@
                 async: true,
                 success: function (res) {
                     fnOcultarLoader();
-                    console.log(res);
+                    //console.log(res);
 
                     if (!res.aaData == "") {
                         $.each(res.aaData, function (index, value) {
@@ -68,15 +68,16 @@
                             var arrDepartamento = sresdepartamento.split(",");
                             var sDepartamento = "";
                             var icontadorDepartamento = 0;
-
                             arrDepartamento.filter(function (dat) {
-                                icontadorDepartamento++;
                                 lstDatos.departamentos.filter(function (el) {
+                                    if (el.contador_departamento == dat) {
+                                        icontadorDepartamento++;
+                                    }
                                     if (icontadorDepartamento == 1) {
-                                        if (el.contador_departamento == dat[0]) {
+                                        if (el.contador_departamento == dat) {
                                             sDepartamento = el.nombre;
                                         }
-                                    } else {
+                                    } else if(icontadorDepartamento != 0) {
                                         if (el.contador_departamento == dat) {
                                             sDepartamento += ", " + el.nombre;
                                         }
